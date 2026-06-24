@@ -53,7 +53,7 @@ jobs:
 
       - name: Deploy to Cloudflare Pages
         if: steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        run: npx wrangler pages deploy pages-youth-policy --project-name youthzip
+        run: npx wrangler pages deploy pages-youth-policy --project-name youthzip --branch main --commit-dirty=true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
