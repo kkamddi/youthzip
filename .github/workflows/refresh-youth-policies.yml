@@ -1,6 +1,12 @@
 name: Refresh youth policies
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/refresh-youth-policies.yml"
+      - "pages-youth-policy/**"
   schedule:
     - cron: "0 23 * * *"
     - cron: "0 11 * * *"
