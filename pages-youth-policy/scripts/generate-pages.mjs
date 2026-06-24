@@ -54,6 +54,63 @@ const statuses = [
 
 const generatedDirs = ["policy", "region", "type", "status"];
 
+const staticPages = [
+  {
+    slug: "about",
+    title: "소개",
+    description: "청년혜택.zip은 청년지원사업을 조건별로 빠르게 찾을 수 있도록 정리한 안내 사이트입니다.",
+    body: [
+      "청년혜택.zip은 지역, 지원 유형, 신청 상태를 기준으로 청년지원사업을 한눈에 살펴볼 수 있도록 만든 정보 안내 사이트입니다.",
+      "각 정책의 신청 여부와 세부 자격은 운영기관의 공식 공고가 최종 기준입니다."
+    ]
+  },
+  {
+    slug: "editorial-policy",
+    title: "편집 방침",
+    description: "청년혜택.zip의 정책 정보 정리 기준과 편집 원칙입니다.",
+    body: [
+      "정책명, 지역, 분야, 신청기간, 지원내용, 대상 조건은 공식 정책 데이터와 공고 내용을 기준으로 정리합니다.",
+      "정보 전달을 위해 긴 문장은 요약할 수 있으며, 신청 전에는 반드시 공식 링크에서 최신 공고와 제출 서류를 확인해야 합니다."
+    ]
+  },
+  {
+    slug: "sources",
+    title: "이미지 출처",
+    description: "청년혜택.zip에서 사용하는 이미지와 자료 출처 안내입니다.",
+    body: [
+      "현재 정책 목록과 상세 페이지는 별도 정책 이미지를 사용하지 않고 텍스트 정보 중심으로 구성합니다.",
+      "향후 이미지가 추가되는 경우 공공누리, 공식 보도자료, 직접 제작 이미지 등 사용 가능한 자료를 기준으로 출처를 함께 표기합니다."
+    ]
+  },
+  {
+    slug: "notice",
+    title: "면책·공지",
+    description: "청년혜택.zip 이용 전 확인해야 할 공지와 면책 안내입니다.",
+    body: [
+      "본 사이트의 정보는 청년지원사업 탐색을 돕기 위한 참고 자료입니다. 모집 일정, 예산 소진, 자격 조건, 제출 서류는 운영기관 사정에 따라 변경될 수 있습니다.",
+      "신청 및 계약 등 중요한 결정 전에는 각 정책의 공식 링크와 담당 기관 안내를 최종 확인해 주세요."
+    ]
+  },
+  {
+    slug: "privacy",
+    title: "개인정보처리방침",
+    description: "청년혜택.zip의 개인정보 처리 안내입니다.",
+    body: [
+      "청년혜택.zip은 현재 회원가입, 댓글, 직접 신청 기능을 제공하지 않으며 이용자의 주민등록번호, 연락처, 계좌번호 등 민감한 개인정보를 직접 수집하지 않습니다.",
+      "외부 공식 신청 사이트로 이동한 뒤 입력하는 개인정보는 해당 기관의 개인정보처리방침을 따릅니다."
+    ]
+  },
+  {
+    slug: "contact",
+    title: "연락처",
+    description: "청년혜택.zip 문의와 제보 안내입니다.",
+    body: [
+      "정책 정보 오류, 링크 오류, 제휴 문의가 있는 경우 운영자가 확인할 수 있는 연락 채널을 준비해 반영할 예정입니다.",
+      "정확한 신청 상담은 각 정책 상세 페이지의 공식 링크 또는 담당 기관 연락처를 이용해 주세요."
+    ]
+  }
+];
+
 function assertInsideRoot(target) {
   const resolved = path.resolve(target);
   if (!resolved.startsWith(rootDir + path.sep)) {
@@ -101,6 +158,20 @@ function teaser(value) {
   return text.length > 95 ? `${text.slice(0, 95)}...` : text;
 }
 
+function footer() {
+  return `  <footer class="site-footer">
+    <nav class="footer-links" aria-label="사이트 안내">
+      <a href="/about/">소개</a>
+      <a href="/editorial-policy/">편집 방침</a>
+      <a href="/sources/">이미지 출처</a>
+      <a href="/notice/">면책·공지</a>
+      <a href="/privacy/">개인정보처리방침</a>
+      <a href="/contact/">연락처</a>
+    </nav>
+    <p>본 사이트는 광고·제휴 수익으로 운영될 수 있습니다. 게시 정보는 공식 공고 기준이며 변동될 수 있습니다. © 2026 청년혜택.zip</p>
+  </footer>`;
+}
+
 function pageShell({ title, description, body }) {
   return `<!doctype html>
 <html lang="ko">
@@ -127,6 +198,7 @@ function pageShell({ title, description, body }) {
   <main class="content-page">
 ${body}
   </main>
+${footer()}
 </body>
 </html>
 `;
@@ -276,6 +348,21 @@ function listPage(kind, slug, label, items) {
   }));
 }
 
+function writeStaticPages() {
+  for (const page of staticPages) {
+    const paragraphs = page.body.map((text) => `<p class="detail-summary">${esc(text)}</p>`).join("\n      ");
+    writePage(`${page.slug}/index.html`, pageShell({
+      title: page.title,
+      description: page.description,
+      body: `    <article class="detail-page">
+      <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
+      <h1 class="page-title">${esc(page.title)}</h1>
+      ${paragraphs}
+    </article>`
+    }));
+  }
+}
+
 function sitemapEntry(url, priority = "0.7") {
   const lastmod = payload.updatedAt || new Date().toISOString().slice(0, 10);
   return `  <url>
@@ -294,6 +381,7 @@ function writeSitemap() {
     ...regions.map(([slug]) => sitemapEntry(`/region/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...types.map(([slug]) => sitemapEntry(`/type/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...statuses.map(([slug]) => sitemapEntry(`/status/${slug}/`, slug === "all" ? "0.8" : "0.7")),
+    ...staticPages.map((page) => sitemapEntry(`/${page.slug}/`, "0.5")),
     ...policies.map((item) => sitemapEntry(`/policy/${encodeURIComponent(item.id)}/`, "0.6"))
   ];
   writePage("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
@@ -330,6 +418,7 @@ for (const [slug, label] of statuses) {
   listPage("status", slug, label, items);
 }
 
+writeStaticPages();
 writeSitemap();
 
 console.log(`Generated ${policies.length} policy pages, ${regions.length + types.length + statuses.length + 3} category pages, sitemap.xml, and robots.txt.`);
