@@ -7,8 +7,15 @@ const rootDir = path.resolve(__dirname, "..");
 const dataPath = path.join(rootDir, "data", "policies.json");
 const payload = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 const policies = payload.policies || [];
+const policyTitleCounts = policies.reduce((counts, item) => {
+  const title = String(item.title || "청년지원사업");
+  counts.set(title, (counts.get(title) || 0) + 1);
+  return counts;
+}, new Map());
 const collator = new Intl.Collator("ko-KR");
 const siteUrl = "https://youthzip.pages.dev";
+const siteName = "청년혜택.zip";
+const defaultOgImage = `${siteUrl}/assets/og-image.svg`;
 
 const regions = [
   ["all", "전체"],
@@ -158,6 +165,46 @@ function teaser(value) {
   return text.length > 95 ? `${text.slice(0, 95)}...` : text;
 }
 
+function policySeoTitle(item) {
+  const title = String(item.title || "청년지원사업");
+  if ((policyTitleCounts.get(title) || 0) <= 1) return title;
+  const region = item.regionGroup || item.region || "전국";
+  return `${title} - ${region} 정책 ${String(item.id || "").slice(-6)}`;
+}
+
+function trimMeta(value, max = 155) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  return text.length > max ? `${text.slice(0, max - 3)}...` : text;
+}
+
+function absoluteUrl(urlPath = "/") {
+  const urlPathText = String(urlPath || "/");
+  if (/^https?:\/\//.test(urlPathText)) return urlPathText;
+  return `${siteUrl}${urlPathText.startsWith("/") ? urlPathText : `/${urlPathText}`}`;
+}
+
+function seoHead({ title, description, path: pagePath = "/", type = "website" }) {
+  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+  const metaDescription = trimMeta(description);
+  const canonicalUrl = absoluteUrl(pagePath);
+  return `  <title>${esc(fullTitle)}</title>
+  <meta name="description" content="${esc(metaDescription)}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="${esc(canonicalUrl)}">
+  <meta property="og:site_name" content="${esc(siteName)}">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="${esc(fullTitle)}">
+  <meta property="og:description" content="${esc(metaDescription)}">
+  <meta property="og:image" content="${esc(defaultOgImage)}">
+  <meta property="og:image:alt" content="청년 혜택과 청년 지원사업을 찾는 청년혜택.zip">
+  <meta property="og:url" content="${esc(canonicalUrl)}">
+  <meta property="og:type" content="${esc(type)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(fullTitle)}">
+  <meta name="twitter:description" content="${esc(metaDescription)}">
+  <meta name="twitter:image" content="${esc(defaultOgImage)}">`;
+}
+
 function footer() {
   return `  <footer class="site-footer">
     <nav class="footer-links" aria-label="사이트 안내">
@@ -172,14 +219,13 @@ function footer() {
   </footer>`;
 }
 
-function pageShell({ title, description, body }) {
+function pageShell({ title, description, body, path: pagePath = "/", type = "website" }) {
   return `<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${esc(title)} - 청년혜택.zip</title>
-  <meta name="description" content="${esc(description)}">
+${seoHead({ title, description, path: pagePath, type })}
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
@@ -251,7 +297,8 @@ function sortPolicies(items) {
 
 function makeDetail(item) {
   const official = safeUrl(item.officialUrl);
-  const description = item.summary || `${item.title} 지원내용, 신청기간, 대상 조건을 정리했습니다.`;
+  const detailPath = `/policy/${encodeURIComponent(item.id)}/`;
+  const description = trimMeta(`${item.regionGroup || item.region || "전국"} ${item.type || "청년"} 정책(${item.id}): ${item.title}. 신청기간 ${item.period || "공식 공고 확인"}, 지원내용, 대상 조건과 공식 링크를 확인하세요.`);
   const body = `    <article class="detail-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <div class="labels">
@@ -283,9 +330,11 @@ function makeDetail(item) {
     </article>`;
 
   writePage(`policy/${encodeURIComponent(item.id)}/index.html`, pageShell({
-    title: item.title,
+    title: policySeoTitle(item),
     description,
-    body
+    body,
+    path: detailPath,
+    type: "article"
   }));
 }
 
@@ -298,6 +347,7 @@ function optionIndex(kind, heading, description, options) {
   writePage(`${kind}/index.html`, pageShell({
     title: heading,
     description,
+    path: `/${kind}/`,
     body: `    <section class="list-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">${esc(heading)}</h1>
@@ -334,17 +384,23 @@ function filterRegion(items, label) {
 
 function listPage(kind, slug, label, items) {
   const sorted = sortPolicies(items);
+  const kindLabels = { region: "지역별", type: "유형별", status: "상태별" };
+  const pageTitle = label === "전체" ? `${kindLabels[kind]} 전체 청년지원사업` : `${label} 청년지원사업`;
+  const pageDescription = label === "전체"
+    ? `${kindLabels[kind]} 전체 청년 지원금, 청년 정책, 청년지원사업 목록입니다. 신청기간과 공식 링크를 확인하세요.`
+    : `${label} 조건에 맞는 청년 지원금, 청년 정책, 청년지원사업 목록입니다. 신청기간과 공식 링크를 확인하세요.`;
   const body = `    <section class="list-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <p class="eyebrow">${kind}</p>
-      <h1 class="page-title">${esc(label)} 청년지원사업</h1>
+      <h1 class="page-title">${esc(pageTitle)}</h1>
       <p class="detail-summary">${sorted.length.toLocaleString("ko-KR")}개 정책을 한눈에 확인할 수 있게 묶었습니다.</p>
       <div class="card-grid list-grid">${sorted.map(policyCard).join("")}</div>
     </section>`;
   writePage(`${kind}/${slug}/index.html`, pageShell({
-    title: `${label} 청년지원사업`,
-    description: `${label} 조건에 맞는 청년지원사업 목록입니다.`,
-    body
+    title: pageTitle,
+    description: pageDescription,
+    body,
+    path: `/${kind}/${slug}/`
   }));
 }
 
@@ -354,6 +410,7 @@ function writeStaticPages() {
     writePage(`${page.slug}/index.html`, pageShell({
       title: page.title,
       description: page.description,
+      path: `/${page.slug}/`,
       body: `    <article class="detail-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">${esc(page.title)}</h1>
