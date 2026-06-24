@@ -96,6 +96,11 @@ function statusClass(status) {
   return "";
 }
 
+function teaser(value) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  return text.length > 95 ? `${text.slice(0, 95)}...` : text;
+}
+
 function pageShell({ title, description, body }) {
   return `<!doctype html>
 <html lang="ko">
@@ -153,9 +158,8 @@ function policyCard(item) {
             <b class="status${statusClass(item.status)}">${esc(item.status)}</b>
           </div>
           <h3><a href="/policy/${encodeURIComponent(item.id)}/">${esc(item.title)}</a></h3>
-          <p class="summary">${esc(item.summary || item.support)}</p>
-          <dl class="meta">
-            <div><dt>지원</dt><dd>${esc(item.support)}</dd></div>
+          <p class="summary">${esc(teaser(item.summary || item.support))}</p>
+          <dl class="meta brief">
             <div><dt>기간</dt><dd>${esc(item.period)}</dd></div>
           </dl>
           <div class="card-actions">

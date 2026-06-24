@@ -82,6 +82,11 @@
     return `<button class="pill${active ? " is-active" : ""}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`;
   }
 
+  function teaser(value) {
+    const text = String(value || "").replace(/\s+/g, " ").trim();
+    return text.length > 95 ? `${text.slice(0, 95)}...` : text;
+  }
+
   function renderPills() {
     $("[data-region-pills]").innerHTML = REGIONS.map((value) => pill(value, value === state.region)).join("");
     $("[data-type-pills]").innerHTML = TYPES.map((value) => pill(value, value === state.type)).join("");
@@ -113,12 +118,9 @@
           <b class="status ${item.effectiveStatus === "마감" ? "closed" : item.effectiveStatus === "예정" ? "scheduled" : ""}">${escapeHtml(item.effectiveStatus)}</b>
         </div>
         <h3>${escapeHtml(item.title)}</h3>
-        <p class="summary">${escapeHtml(item.summary || item.support)}</p>
-        <dl class="meta">
-          <div><dt>지원</dt><dd>${escapeHtml(item.support)}</dd></div>
+        <p class="summary">${escapeHtml(teaser(item.summary || item.support))}</p>
+        <dl class="meta brief">
           <div><dt>기간</dt><dd>${escapeHtml(item.period)}</dd></div>
-          <div><dt>대상</dt><dd>${escapeHtml(item.age || item.residence)}</dd></div>
-          <div><dt>소득</dt><dd>${escapeHtml(item.income)}</dd></div>
         </dl>
         <div class="card-actions">
           <a class="link-button" href="${escapeHtml(detail)}">상세보기</a>
