@@ -1,0 +1,59 @@
+name: Refresh youth policies
+
+on:
+  schedule:
+    - cron: "0 23 * * *"
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch official policy data
+        run: node pages-youth-policy/scripts/fetch-policies.mjs
+
+      - name: Generate static pages
+        run: node pages-youth-policy/scripts/generate-pages.mjs
+
+      - name: Validate scripts
+        run: |
+          node --check pages-youth-policy/scripts/fetch-policies.mjs
+          node --check pages-youth-policy/scripts/generate-pages.mjs
+
+      - name: Detect changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- pages-youth-policy; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit updated data
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pages-youth-policy
+          git commit -m "Update youth policy data"
+          git push
+
+      - name: Deploy to Cloudflare Pages
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: npx wrangler pages deploy pages-youth-policy --project-name youthzip
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
