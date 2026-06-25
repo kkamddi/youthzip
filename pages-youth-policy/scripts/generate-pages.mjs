@@ -59,7 +59,7 @@ const statuses = [
   ["closed", "마감"]
 ];
 
-const generatedDirs = ["policy", "region", "type", "status"];
+const generatedDirs = ["policy", "region", "type", "status", "guides"];
 
 const staticPages = [
   {
@@ -114,6 +114,69 @@ const staticPages = [
     body: [
       "정책 정보 오류, 링크 오류, 제휴 문의가 있는 경우 운영자가 확인할 수 있는 연락 채널을 준비해 반영할 예정입니다.",
       "정확한 신청 상담은 각 정책 상세 페이지의 공식 링크 또는 담당 기관 연락처를 이용해 주세요."
+    ]
+  }
+];
+
+const guides = [
+  {
+    slug: "youth-monthly-rent-support",
+    title: "청년 월세 지원·주거 지원 총정리",
+    description: "청년 월세 지원, 주거비 지원, 전세·정착 지원 등 청년 주거 지원사업을 신청 대상, 기간, 공식 링크 기준으로 모아보세요.",
+    intro: "월세와 주거비 부담을 줄이고 싶은 청년이라면 먼저 거주 지역, 소득 조건, 신청 기간을 함께 확인해야 합니다. 이 페이지에서는 청년 월세 지원과 주거 관련 청년 정책을 빠르게 훑어볼 수 있도록 정리했습니다.",
+    sections: [
+      ["먼저 확인할 조건", "대부분의 청년 주거 지원은 나이, 거주지, 소득, 무주택 여부, 임대차 계약 여부를 함께 봅니다. 같은 월세 지원이라도 지역별 예산과 접수 방식이 다르기 때문에 공식 공고의 신청 기간을 반드시 확인해야 합니다."],
+      ["찾는 방법", "유형은 주거로 보고, 상태는 신청중 또는 마감임박을 먼저 확인하세요. 지역이 정해져 있다면 거주 지역 필터를 함께 적용하면 실제 신청 가능한 정책을 더 빨리 좁힐 수 있습니다."]
+    ],
+    related: (item) => item.type === "주거" || /월세|주거|전세|임대|정착/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["청년 월세 지원은 중복 신청할 수 있나요?", "사업마다 중복 수혜 제한이 다릅니다. 기존 주거급여, 지자체 월세 지원, 유사 주거 지원을 받고 있다면 공식 공고에서 중복 제한을 먼저 확인해야 합니다."],
+      ["거주 지역과 주민등록 지역이 다르면 신청할 수 있나요?", "정책마다 기준이 다릅니다. 일부 사업은 주민등록상 주소를 기준으로 보고, 일부는 실제 거주지나 임대차 계약 주소를 함께 확인합니다."]
+    ]
+  },
+  {
+    slug: "youth-job-support",
+    title: "청년 취업 지원 정책 모아보기",
+    description: "청년 취업 지원, 면접 지원, 일경험, 직무교육, 구직활동 지원사업을 신청 상태와 공식 링크 기준으로 확인하세요.",
+    intro: "취업 준비 중인 청년에게는 구직활동비, 면접비, 일경험, 직무교육처럼 목적이 다른 지원사업이 나뉘어 제공됩니다. 본인 상황에 맞는 정책을 고르려면 지원 내용보다 신청 대상과 진행 상태를 먼저 확인하는 것이 좋습니다.",
+    sections: [
+      ["먼저 확인할 조건", "미취업 여부, 졸업 여부, 재학생 가능 여부, 거주지, 소득 기준이 자주 쓰입니다. 일경험이나 직무교육은 모집 인원과 선착순 여부도 중요합니다."],
+      ["찾는 방법", "유형은 취업으로 보고, 검색창에 면접, 일경험, 구직, 교육 같은 단어를 함께 입력하면 목적에 맞는 사업을 더 빠르게 찾을 수 있습니다."]
+    ],
+    related: (item) => item.type === "취업" || /취업|구직|면접|일경험|직무|채용|인턴/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["재학생도 청년 취업 지원을 받을 수 있나요?", "사업마다 다릅니다. 졸업예정자나 휴학생까지 허용하는 사업이 있고, 미취업 졸업자만 가능한 사업도 있습니다."],
+      ["마감임박 정책은 먼저 신청해야 하나요?", "마감일이 가까운 정책은 접수 종료나 예산 소진 가능성이 있으므로 공식 링크에서 접수 가능 여부를 먼저 확인하는 편이 좋습니다."]
+    ]
+  },
+  {
+    slug: "seoul-youth-subsidy",
+    title: "서울 청년 지원금·청년 정책 모아보기",
+    description: "서울 청년 지원금, 서울 청년 월세 지원, 취업·주거·복지 정책을 지역별로 모아 공식 신청 링크와 함께 확인하세요.",
+    intro: "서울 청년 지원사업은 주거, 취업, 복지, 문화 영역으로 나뉘어 운영되는 경우가 많습니다. 같은 서울 정책이라도 자치구별 사업과 서울시 전체 사업이 섞여 있으니 지역 조건을 함께 확인하는 것이 중요합니다.",
+    sections: [
+      ["서울 정책을 볼 때 중요한 점", "서울시 전체 대상인지, 특정 자치구 거주 청년 대상인지 확인해야 합니다. 신청 기간이 짧거나 모집 인원이 정해진 사업은 마감임박 상태를 먼저 보는 것이 좋습니다."],
+      ["추천 확인 순서", "먼저 신청중 정책을 보고, 그다음 마감임박 정책을 확인하세요. 월세, 면접, 마음건강, 교통비처럼 목적 키워드를 검색창에 입력하면 더 정확하게 좁힐 수 있습니다."]
+    ],
+    related: (item) => item.regionGroup === "서울" || item.city === "서울" || String(item.region || "").includes("서울"),
+    faq: [
+      ["서울 청년 지원금은 서울 거주자만 신청할 수 있나요?", "대부분은 서울 거주 또는 서울 생활권 조건을 두지만 사업마다 다릅니다. 주민등록 주소, 학교·직장 소재지 기준을 각각 확인해야 합니다."],
+      ["서울 자치구 사업도 함께 볼 수 있나요?", "정책 데이터에 포함된 경우 서울 지역 목록에서 함께 확인할 수 있습니다. 상세 페이지의 공식 링크에서 자치구 공고를 다시 확인하세요."]
+    ]
+  },
+  {
+    slug: "gyeonggi-youth-subsidy",
+    title: "경기도 청년 지원금·청년 정책 모아보기",
+    description: "경기도 청년 지원금, 청년 취업 지원, 주거·복지 정책을 지역별로 모아 신청 기간과 공식 링크 기준으로 확인하세요.",
+    intro: "경기도 청년 정책은 도 단위 사업과 시·군 단위 사업이 함께 운영됩니다. 거주 중인 시·군 조건이 붙는 경우가 많으므로 제목과 상세 조건에서 지역 범위를 꼭 확인해야 합니다.",
+    sections: [
+      ["경기도 정책을 볼 때 중요한 점", "경기도 전체 대상인지, 특정 시·군 청년 대상인지 먼저 확인하세요. 예산 소진형 지원금은 접수 기간 안이라도 조기 종료될 수 있습니다."],
+      ["추천 확인 순서", "경기도 지역 페이지에서 신청중과 마감임박 사업을 먼저 보고, 주거·취업·복지처럼 필요한 유형을 추가로 좁히는 방식이 효율적입니다."]
+    ],
+    related: (item) => item.regionGroup === "경기" || item.city === "경기" || String(item.region || "").includes("경기"),
+    faq: [
+      ["경기도 청년 지원금은 시·군이 달라도 신청할 수 있나요?", "사업마다 다릅니다. 경기도 전체 대상 사업도 있고, 특정 시·군 거주자만 가능한 사업도 있으니 공식 공고의 지역 조건을 확인해야 합니다."],
+      ["경기도 청년 정책은 어디서 신청하나요?", "사업별 운영기관이 다르므로 청년혜택.zip 상세 페이지의 공식 링크에서 신청 페이지와 제출 서류를 최종 확인해야 합니다."]
     ]
   }
 ];
@@ -256,6 +319,7 @@ ${schemaTags}
     </a>
     <nav class="top-nav" aria-label="주요 메뉴">
       <a href="/">정책 찾기</a>
+      <a href="/guides/">가이드</a>
       <a href="/region/">지역별</a>
       <a href="/type/">유형별</a>
       <a href="/status/">상태별</a>
@@ -475,6 +539,108 @@ function writeStaticPages() {
   }
 }
 
+function guideCard(guide) {
+  return `<a class="category-link guide-link" href="/guides/${guide.slug}/"><strong>${esc(guide.title)}</strong><span>보기</span></a>`;
+}
+
+function guideFaqSchema(guide) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: guide.faq.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer
+      }
+    }))
+  };
+}
+
+function makeGuideIndex() {
+  const body = `    <section class="list-page">
+      <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
+      <p class="eyebrow">Guides</p>
+      <h1 class="page-title">청년 혜택 검색 가이드</h1>
+      <p class="detail-summary">청년 월세 지원, 청년 취업 지원, 서울 청년 지원금, 경기도 청년 지원금처럼 검색 수요가 큰 주제를 따로 정리했습니다.</p>
+      <div class="category-grid guide-grid">${guides.map(guideCard).join("")}</div>
+    </section>`;
+  writePage("guides/index.html", pageShell({
+    title: "청년 혜택 검색 가이드",
+    description: "청년 월세 지원, 청년 취업 지원, 서울 청년 지원금, 경기도 청년 지원금을 주제별로 쉽게 찾아보세요.",
+    body,
+    path: "/guides/",
+    schema: [breadcrumbSchema([
+      { name: "홈", path: "/" },
+      { name: "청년 혜택 검색 가이드", path: "/guides/" }
+    ])]
+  }));
+}
+
+function makeGuide(guide) {
+  const guidePath = `/guides/${guide.slug}/`;
+  const related = sortPolicies(policies.filter(guide.related)).slice(0, 12);
+  const sections = guide.sections.map(([heading, text]) => `      <section class="detail-section">
+        <h2>${esc(heading)}</h2>
+        <p>${esc(text)}</p>
+      </section>`).join("\n");
+  const faq = guide.faq.map(([question, answer]) => `        <article>
+          <h3>${esc(question)}</h3>
+          <p>${esc(answer)}</p>
+        </article>`).join("\n");
+  const body = `    <article class="detail-page guide-page">
+      <a class="back-link" href="/guides/">← 가이드 목록으로 돌아가기</a>
+      <p class="eyebrow">Guide</p>
+      <h1 class="page-title">${esc(guide.title)}</h1>
+      <p class="detail-summary">${esc(guide.intro)}</p>
+${sections}
+      <section class="detail-section">
+        <h2>관련 청년지원사업</h2>
+        <p>${related.length.toLocaleString("ko-KR")}개 정책을 먼저 추려봤습니다. 실제 신청 전에는 상세 페이지와 공식 링크에서 최신 공고를 확인하세요.</p>
+        <div class="card-grid list-grid">${related.map(policyCard).join("")}</div>
+      </section>
+      <section class="detail-section faq-section">
+        <h2>자주 묻는 질문</h2>
+        <div class="faq-list">${faq}</div>
+      </section>
+    </article>`;
+  writePage(`guides/${guide.slug}/index.html`, pageShell({
+    title: guide.title,
+    description: guide.description,
+    body,
+    path: guidePath,
+    type: "article",
+    schema: [
+      breadcrumbSchema([
+        { name: "홈", path: "/" },
+        { name: "청년 혜택 검색 가이드", path: "/guides/" },
+        { name: guide.title, path: guidePath }
+      ]),
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: guide.title,
+        description: guide.description,
+        url: absoluteUrl(guidePath),
+        dateModified: payload.updatedAt || new Date().toISOString().slice(0, 10),
+        publisher: {
+          "@type": "Organization",
+          name: siteName,
+          url: siteUrl
+        },
+        mainEntityOfPage: absoluteUrl(guidePath)
+      },
+      guideFaqSchema(guide)
+    ]
+  }));
+}
+
+function writeGuides() {
+  makeGuideIndex();
+  for (const guide of guides) makeGuide(guide);
+}
+
 function sitemapEntry(url, priority = "0.7") {
   const lastmod = payload.updatedAt || new Date().toISOString().slice(0, 10);
   return `  <url>
@@ -490,9 +656,11 @@ function writeSitemap() {
     sitemapEntry("/region/", "0.8"),
     sitemapEntry("/type/", "0.8"),
     sitemapEntry("/status/", "0.8"),
+    sitemapEntry("/guides/", "0.8"),
     ...regions.map(([slug]) => sitemapEntry(`/region/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...types.map(([slug]) => sitemapEntry(`/type/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...statuses.map(([slug]) => sitemapEntry(`/status/${slug}/`, slug === "all" ? "0.8" : "0.7")),
+    ...guides.map((guide) => sitemapEntry(`/guides/${guide.slug}/`, "0.75")),
     ...staticPages.map((page) => sitemapEntry(`/${page.slug}/`, "0.5")),
     ...policies.map((item) => sitemapEntry(`/policy/${encodeURIComponent(item.id)}/`, "0.6"))
   ];
@@ -531,6 +699,7 @@ for (const [slug, label] of statuses) {
 }
 
 writeStaticPages();
+writeGuides();
 writeSitemap();
 
-console.log(`Generated ${policies.length} policy pages, ${regions.length + types.length + statuses.length + 3} category pages, sitemap.xml, and robots.txt.`);
+console.log(`Generated ${policies.length} policy pages, ${regions.length + types.length + statuses.length + 3} category pages, ${guides.length + 1} guide pages, sitemap.xml, and robots.txt.`);

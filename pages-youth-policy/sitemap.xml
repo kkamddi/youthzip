@@ -21,6 +21,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://youthzip.pages.dev/guides/</loc>
+    <lastmod>2026-06-25</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://youthzip.pages.dev/region/all/</loc>
     <lastmod>2026-06-25</lastmod>
     <priority>0.8</priority>
@@ -184,6 +189,26 @@
     <loc>https://youthzip.pages.dev/status/closed/</loc>
     <lastmod>2026-06-25</lastmod>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/guides/youth-monthly-rent-support/</loc>
+    <lastmod>2026-06-25</lastmod>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/guides/youth-job-support/</loc>
+    <lastmod>2026-06-25</lastmod>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/guides/seoul-youth-subsidy/</loc>
+    <lastmod>2026-06-25</lastmod>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/guides/gyeonggi-youth-subsidy/</loc>
+    <lastmod>2026-06-25</lastmod>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://youthzip.pages.dev/about/</loc>
