@@ -309,6 +309,9 @@ function pageShell({ title, description, body, path: pagePath = "/", type = "web
   <meta name="viewport" content="width=device-width, initial-scale=1">
 ${seoHead({ title, description, path: pagePath, type })}
 ${schemaTags}
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
