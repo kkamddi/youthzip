@@ -110,12 +110,20 @@
   function card(item) {
     const official = item.officialUrl || "#";
     const detail = `/policy/${encodeURIComponent(item.id)}/`;
+    const isClosingSoon = item.effectiveStatus === "마감임박";
+    const statusModifier = item.effectiveStatus === "마감"
+      ? "closed"
+      : item.effectiveStatus === "예정"
+        ? "scheduled"
+        : isClosingSoon
+          ? "closing-soon"
+          : "";
     return `
-      <article class="policy-card">
+      <article class="policy-card${isClosingSoon ? " is-closing-soon" : ""}">
         <div class="labels">
           <span>${escapeHtml(item.regionGroup || item.region)}</span>
           <span>${escapeHtml(item.type)}</span>
-          <b class="status ${item.effectiveStatus === "마감" ? "closed" : item.effectiveStatus === "예정" ? "scheduled" : ""}">${escapeHtml(item.effectiveStatus)}</b>
+          <b class="status ${statusModifier}">${escapeHtml(item.effectiveStatus)}</b>
         </div>
         <h3>${escapeHtml(item.title)}</h3>
         <p class="summary">${escapeHtml(teaser(item.summary || item.support))}</p>

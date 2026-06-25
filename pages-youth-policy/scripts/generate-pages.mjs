@@ -157,6 +157,7 @@ function safeUrl(value) {
 function statusClass(status) {
   if (status === "마감") return " closed";
   if (status === "예정") return " scheduled";
+  if (status === "마감임박") return " closing-soon";
   return "";
 }
 
@@ -205,6 +206,23 @@ function seoHead({ title, description, path: pagePath = "/", type = "website" })
   <meta name="twitter:image" content="${esc(defaultOgImage)}">`;
 }
 
+function jsonLd(data) {
+  return `  <script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
+}
+
+function breadcrumbSchema(items) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path)
+    }))
+  };
+}
+
 function footer() {
   return `  <footer class="site-footer">
     <nav class="footer-links" aria-label="사이트 안내">
@@ -219,13 +237,15 @@ function footer() {
   </footer>`;
 }
 
-function pageShell({ title, description, body, path: pagePath = "/", type = "website" }) {
+function pageShell({ title, description, body, path: pagePath = "/", type = "website", schema = [] }) {
+  const schemaTags = schema.length ? `\n${schema.map(jsonLd).join("\n")}` : "";
   return `<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 ${seoHead({ title, description, path: pagePath, type })}
+${schemaTags}
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
@@ -268,8 +288,9 @@ function metaRows(item) {
 
 function policyCard(item) {
   const official = safeUrl(item.officialUrl);
+  const isClosingSoon = item.status === "마감임박";
   return `
-        <article class="policy-card compact">
+        <article class="policy-card compact${isClosingSoon ? " is-closing-soon" : ""}">
           <div class="labels">
             <span>${esc(item.regionGroup || item.region)}</span>
             <span>${esc(item.type)}</span>
@@ -334,7 +355,28 @@ function makeDetail(item) {
     description,
     body,
     path: detailPath,
-    type: "article"
+    type: "article",
+    schema: [
+      breadcrumbSchema([
+        { name: "홈", path: "/" },
+        { name: item.regionGroup || item.region || "청년지원사업", path: `/region/${regionSlug(item)}/` },
+        { name: item.title, path: detailPath }
+      ]),
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: policySeoTitle(item),
+        description,
+        url: absoluteUrl(detailPath),
+        dateModified: payload.updatedAt || new Date().toISOString().slice(0, 10),
+        publisher: {
+          "@type": "Organization",
+          name: siteName,
+          url: siteUrl
+        },
+        mainEntityOfPage: absoluteUrl(detailPath)
+      }
+    ]
   }));
 }
 
@@ -348,6 +390,10 @@ function optionIndex(kind, heading, description, options) {
     title: heading,
     description,
     path: `/${kind}/`,
+    schema: [breadcrumbSchema([
+      { name: "홈", path: "/" },
+      { name: heading, path: `/${kind}/` }
+    ])],
     body: `    <section class="list-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">${esc(heading)}</h1>
@@ -400,7 +446,12 @@ function listPage(kind, slug, label, items) {
     title: pageTitle,
     description: pageDescription,
     body,
-    path: `/${kind}/${slug}/`
+    path: `/${kind}/${slug}/`,
+    schema: [breadcrumbSchema([
+      { name: "홈", path: "/" },
+      { name: kindLabels[kind], path: `/${kind}/` },
+      { name: pageTitle, path: `/${kind}/${slug}/` }
+    ])]
   }));
 }
 
@@ -411,6 +462,10 @@ function writeStaticPages() {
       title: page.title,
       description: page.description,
       path: `/${page.slug}/`,
+      schema: [breadcrumbSchema([
+        { name: "홈", path: "/" },
+        { name: page.title, path: `/${page.slug}/` }
+      ])],
       body: `    <article class="detail-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">${esc(page.title)}</h1>
