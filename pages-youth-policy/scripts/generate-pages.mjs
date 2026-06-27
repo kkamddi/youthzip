@@ -38,7 +38,6 @@ const regions = [
   ["gyeongnam", "경남"],
   ["jeju", "제주"]
 ];
-
 const types = [
   ["all", "전체"],
   ["housing", "주거"],
@@ -177,6 +176,51 @@ const guides = [
     faq: [
       ["경기도 청년 지원금은 시·군이 달라도 신청할 수 있나요?", "사업마다 다릅니다. 경기도 전체 대상 사업도 있고, 특정 시·군 거주자만 가능한 사업도 있으니 공식 공고의 지역 조건을 확인해야 합니다."],
       ["경기도 청년 정책은 어디서 신청하나요?", "사업별 운영기관이 다르므로 청년혜택.zip 상세 페이지의 공식 링크에서 신청 페이지와 제출 서류를 최종 확인해야 합니다."]
+    ]
+  },
+  {
+    slug: "youth-rent-checklist",
+    title: "청년 월세 지원 신청 전 체크리스트",
+    description: "청년 월세 지원 신청 전에 확인해야 할 거주지, 소득, 임대차 계약, 중복 수혜, 제출 서류 기준을 정리했습니다.",
+    intro: "청년 월세 지원은 신청 기간만 보고 접근하면 놓치는 조건이 많습니다. 거주지와 임대차 계약, 소득 기준, 기존 지원 수혜 여부를 먼저 확인하면 실제 신청 가능성을 빠르게 판단할 수 있습니다.",
+    sections: [
+      ["신청 전 확인할 것", "주민등록상 주소, 실제 거주지, 임대차 계약 명의, 월세 납부 증빙, 소득 기준, 무주택 여부를 먼저 확인하세요. 같은 월세 지원이라도 지자체별로 인정하는 계약 형태와 제출 서류가 다를 수 있습니다."],
+      ["중복 수혜 확인", "주거급여, 지자체 월세 지원, 전세·임대료 지원을 이미 받고 있다면 중복 제한이 있는지 공식 공고에서 확인해야 합니다. 예산 소진형 사업은 접수 가능 여부도 함께 봐야 합니다."]
+    ],
+    related: (item) => item.type === "주거" || /월세|주거|임대|전세|보증금|정착/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["부모와 따로 살아야 신청할 수 있나요?", "정책마다 다릅니다. 일부 사업은 청년 본인의 독립 거주와 임대차 계약을 요구하고, 일부는 가구 소득 기준을 함께 봅니다."],
+      ["계약서가 본인 명의가 아니어도 되나요?", "대부분은 본인 명의 계약과 월세 납부 증빙을 중요하게 봅니다. 예외 인정 여부는 공식 공고를 확인해야 합니다."]
+    ]
+  },
+  {
+    slug: "youth-job-subsidy-types",
+    title: "청년 취업 지원금 종류와 찾는 법",
+    description: "청년 취업 지원금, 면접비, 구직활동비, 일경험, 직무교육 지원사업을 종류별로 찾는 방법을 정리했습니다.",
+    intro: "청년 취업 지원은 현금성 지원만 있는 것이 아니라 면접비, 구직활동비, 직무교육, 일경험, 인턴십처럼 목적별로 나뉩니다. 본인 상황에 맞는 유형을 먼저 고르면 검색 시간이 줄어듭니다.",
+    sections: [
+      ["주요 지원 유형", "면접비와 구직활동비는 단기 비용 부담을 줄이는 데 유용하고, 직무교육과 일경험은 취업 준비 과정 자체를 지원합니다. 지역별 청년 일자리 사업은 거주지나 활동 지역 조건을 함께 봐야 합니다."],
+      ["찾는 순서", "유형은 취업으로 선택하고 검색어에 면접, 구직, 교육, 인턴, 일경험을 넣어보세요. 신청중과 마감임박 정책을 먼저 확인하면 바로 신청 가능한 사업부터 볼 수 있습니다."]
+    ],
+    related: (item) => item.type === "취업" || /취업|면접|구직|일경험|인턴|직무|교육|채용/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["재학생도 취업 지원금을 받을 수 있나요?", "사업마다 다릅니다. 졸업예정자나 휴학생을 포함하는 사업도 있고, 미취업 졸업자만 가능한 사업도 있습니다."],
+      ["면접비 지원은 여러 번 신청할 수 있나요?", "횟수 제한과 연간 한도가 있는 경우가 많습니다. 면접 증빙 서류와 신청 가능 횟수를 공식 공고에서 확인하세요."]
+    ]
+  },
+  {
+    slug: "local-youth-policy-guide",
+    title: "지역별 청년 정책 찾는 법",
+    description: "서울, 경기 등 지역별 청년 지원사업을 찾을 때 거주지, 활동 지역, 신청 상태, 마감일을 기준으로 좁히는 방법을 정리했습니다.",
+    intro: "청년 정책은 전국 공통 사업과 지자체 사업이 섞여 있습니다. 지역 조건을 잘못 보면 신청할 수 없는 정책을 오래 읽게 되므로, 먼저 본인의 거주지와 활동 지역 기준을 나눠 확인하는 것이 좋습니다.",
+    sections: [
+      ["지역 조건 확인", "주민등록상 주소를 요구하는 사업도 있고, 학교나 직장 소재지, 실제 활동 지역을 인정하는 사업도 있습니다. 서울과 경기처럼 정책 수가 많은 지역은 시·군·구 조건까지 함께 확인해야 합니다."],
+      ["빠르게 좁히는 방법", "지역 필터를 먼저 선택한 뒤 신청중, 마감임박 순서로 확인하세요. 이후 주거, 취업, 금융처럼 필요한 유형을 추가하면 실제 신청 가능성이 높은 정책만 남길 수 있습니다."]
+    ],
+    related: (item) => item.status !== "마감" && Boolean(item.regionGroup || item.region),
+    faq: [
+      ["전국 정책과 지역 정책은 어떻게 다르나요?", "전국 정책은 지역 제한이 없거나 넓고, 지역 정책은 특정 시·도 또는 시·군·구 거주자를 대상으로 하는 경우가 많습니다."],
+      ["이사 예정이면 어느 지역 정책을 봐야 하나요?", "신청일 기준 주민등록지나 실제 거주지 기준이 중요합니다. 이사 예정만으로 신청 가능한지는 공고별로 다릅니다."]
     ]
   }
 ];
@@ -706,8 +750,18 @@ function calendarMonth(monthKey, isActive = false) {
     const day = index + 1;
     const dateKey = `${monthKey}-${String(day).padStart(2, "0")}`;
     const dayEvents = byDate.get(dateKey) || [];
+    const isToday = dateKey === todayKey;
+    const isClosingWeek = dayEvents.some((item) => {
+      const diffDays = Math.ceil((new Date(`${item.endDate}T00:00:00`) - new Date(`${todayKey}T00:00:00`)) / 86400000);
+      return diffDays >= 0 && diffDays <= 7;
+    });
+    const dayClass = [
+      "calendar-day",
+      isToday ? "is-today" : "",
+      isClosingWeek ? "is-closing-week" : ""
+    ].filter(Boolean).join(" ");
     const visible = dayEvents.slice(0, 3).map((item) =>
-      `<a class="calendar-event" href="/policy/${encodeURIComponent(item.id)}/" title="${esc(item.title)}">${esc(item.title)}</a>`
+      `<a class="calendar-event type-${typeSlug(item)}" href="/policy/${encodeURIComponent(item.id)}/" title="${esc(item.title)}">${esc(item.title)}</a>`
     ).join("");
     const more = dayEvents.length > 3
       ? `<button class="calendar-more" type="button" data-agenda-target="agenda-${dateKey}">${dayEvents.length}개 전체 목록</button>`
@@ -715,7 +769,7 @@ function calendarMonth(monthKey, isActive = false) {
     const mobileCount = dayEvents.length
       ? `<button class="calendar-day-count" type="button" data-agenda-target="agenda-${dateKey}" aria-label="${year}년 ${month}월 ${day}일 마감 정책 ${dayEvents.length}개 보기">${dayEvents.length}개</button>`
       : "";
-    return `<div class="calendar-day"><span class="calendar-date">${day}</span>${visible}${more}${mobileCount}</div>`;
+    return `<div class="${dayClass}"><span class="calendar-date">${day}</span>${visible}${more}${mobileCount}</div>`;
   }).join("");
   const agenda = events.length
     ? [...byDate.entries()].map(([dateKey, items]) => `        <section class="agenda-day" id="agenda-${dateKey}">

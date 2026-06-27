@@ -42,6 +42,11 @@
     return now;
   }
 
+  function daysUntil(date) {
+    const current = today();
+    return date ? Math.ceil((date - current) / 86400000) : null;
+  }
+
   function statusOf(item) {
     const start = parseDate(item.startDate);
     const end = parseDate(item.endDate);
@@ -123,10 +128,72 @@
     return text.length > 95 ? `${text.slice(0, 95)}...` : text;
   }
 
+  function compactCard(item, badge) {
+    const detail = `/policy/${encodeURIComponent(item.id)}/`;
+    const official = item.officialUrl || "#";
+    return `
+      <article class="policy-card spotlight-card${item.effectiveStatus === "마감임박" ? " is-closing-soon" : ""}">
+        <div class="labels">
+          <span>${escapeHtml(item.regionGroup || item.region)}</span>
+          <span>${escapeHtml(item.type)}</span>
+          <b class="status${item.effectiveStatus === "마감임박" ? " closing-soon" : ""}">${escapeHtml(badge || item.effectiveStatus)}</b>
+        </div>
+        <h3><a href="${escapeHtml(detail)}">${escapeHtml(item.title)}</a></h3>
+        <p class="summary">${escapeHtml(teaser(item.summary || item.support))}</p>
+        <div class="card-actions">
+          <button class="link-button favorite-button" type="button" data-favorite-button data-policy-id="${escapeHtml(item.id)}" aria-pressed="false">♡ 찜</button>
+          <a class="link-button" href="${escapeHtml(detail)}">상세보기</a>
+          <a class="link-button primary" href="${escapeHtml(official)}" target="_blank" rel="noopener noreferrer">공식 링크</a>
+        </div>
+      </article>
+    `;
+  }
+
   function renderPills() {
     $("[data-region-pills]").innerHTML = REGIONS.map((value) => pill(value, value === state.region)).join("");
     $("[data-type-pills]").innerHTML = TYPES.map((value) => pill(value, value === state.type)).join("");
     $("[data-status-pills]").innerHTML = STATUSES.map((value) => pill(value, value === state.status)).join("");
+  }
+
+  function renderHomeSections() {
+    const weekClosing = policies
+      .filter((item) => {
+        const remaining = daysUntil(parseDate(item.endDate));
+        return item.effectiveStatus !== "마감" && remaining !== null && remaining >= 0 && remaining <= 7;
+      })
+      .sort((a, b) => sortDate(a) - sortDate(b))
+      .slice(0, 3);
+    const newest = policies
+      .filter((item) => item.effectiveStatus !== "마감")
+      .sort((a, b) => (parseDate(b.startDate)?.getTime() || 0) - (parseDate(a.startDate)?.getTime() || 0))
+      .slice(0, 3);
+    const favorites = favoriteIds();
+    const saved = policies
+      .filter((item) => favorites.has(String(item.id)))
+      .sort((a, b) => statusRank(a.effectiveStatus) - statusRank(b.effectiveStatus) || sortDate(a) - sortDate(b))
+      .slice(0, 6);
+
+    const weekTarget = $("[data-week-closing-list]");
+    const newTarget = $("[data-new-policy-list]");
+    const savedTarget = $("[data-saved-policy-list]");
+    const savedCount = $("[data-saved-count]");
+
+    if (weekTarget) {
+      weekTarget.innerHTML = weekClosing.length
+        ? weekClosing.map((item) => compactCard(item, `${daysUntil(parseDate(item.endDate))}일 남음`)).join("")
+        : `<p class="empty">이번 주 마감 정책이 없습니다.</p>`;
+    }
+    if (newTarget) {
+      newTarget.innerHTML = newest.length
+        ? newest.map((item) => compactCard(item, "신규")).join("")
+        : `<p class="empty">새로 표시할 정책이 없습니다.</p>`;
+    }
+    if (savedTarget) {
+      savedTarget.innerHTML = saved.length
+        ? saved.map((item) => compactCard(item, item.effectiveStatus)).join("")
+        : `<p class="empty">아직 찜한 정책이 없습니다. 관심 있는 정책의 찜 버튼을 눌러두면 여기에 모입니다.</p>`;
+    }
+    if (savedCount) savedCount.textContent = favorites.size.toLocaleString("ko-KR");
   }
 
   function filteredPolicies() {
@@ -198,6 +265,7 @@
     favoriteToggle.setAttribute("aria-pressed", String(state.favoritesOnly));
     $("[data-policy-list]").innerHTML = items.map(card).join("");
     $("[data-empty]").hidden = items.length > 0;
+    renderHomeSections();
     window.dispatchEvent(new CustomEvent("youthzip:cards-rendered"));
   }
 
