@@ -26,6 +26,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://youthzip.pages.dev/calendar/</loc>
+    <lastmod>2026-06-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://youthzip.pages.dev/region/all/</loc>
     <lastmod>2026-06-27</lastmod>
     <priority>0.8</priority>

@@ -2,6 +2,8 @@
   "use strict";
 
   const DATA_URL = "/data/policies.json";
+  const FILTERS_KEY = "youthzip:filters";
+  const FAVORITES_KEY = "youthzip:favorites";
   const REGIONS = ["전체", "전국", "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
   const TYPES = ["전체", "주거", "취업", "금융", "교육", "교통", "문화", "복지", "창업"];
   const STATUSES = ["전체", "신청중", "마감임박", "예정", "마감"];
@@ -10,7 +12,9 @@
     region: "전체",
     type: "전체",
     status: "전체",
-    keyword: ""
+    keyword: "",
+    sort: "recommended",
+    favoritesOnly: false
   };
 
   let policies = [];
@@ -78,6 +82,38 @@
     return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
   }
 
+  function favoriteIds() {
+    try {
+      const values = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+      return new Set(Array.isArray(values) ? values.map(String) : []);
+    } catch {
+      return new Set();
+    }
+  }
+
+  function loadFilters() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(FILTERS_KEY) || "null");
+      if (!saved) return false;
+      if (REGIONS.includes(saved.region)) state.region = saved.region;
+      if (TYPES.includes(saved.type)) state.type = saved.type;
+      if (STATUSES.includes(saved.status)) state.status = saved.status;
+      if (["recommended", "deadline", "latest"].includes(saved.sort)) state.sort = saved.sort;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function saveFilters() {
+    localStorage.setItem(FILTERS_KEY, JSON.stringify({
+      region: state.region,
+      type: state.type,
+      status: state.status,
+      sort: state.sort
+    }));
+  }
+
   function pill(value, active) {
     return `<button class="pill${active ? " is-active" : ""}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`;
   }
@@ -95,6 +131,7 @@
 
   function filteredPolicies() {
     const keyword = state.keyword.toLocaleLowerCase("ko-KR");
+    const favorites = favoriteIds();
     return policies.filter((item) => {
       const regionMatch = state.region === "전체" ||
         item.regionGroup === state.region ||
@@ -103,8 +140,17 @@
       return regionMatch &&
         (state.type === "전체" || item.type === state.type) &&
         (state.status === "전체" || item.effectiveStatus === state.status) &&
+        (!state.favoritesOnly || favorites.has(String(item.id))) &&
         (!keyword || item.searchText.includes(keyword));
-    }).sort((a, b) => statusRank(a.effectiveStatus) - statusRank(b.effectiveStatus) || sortDate(a) - sortDate(b));
+    }).sort((a, b) => {
+      if (state.sort === "deadline") {
+        return (a.effectiveStatus === "마감") - (b.effectiveStatus === "마감") || sortDate(a) - sortDate(b);
+      }
+      if (state.sort === "latest") {
+        return (parseDate(b.startDate)?.getTime() || 0) - (parseDate(a.startDate)?.getTime() || 0);
+      }
+      return statusRank(a.effectiveStatus) - statusRank(b.effectiveStatus) || sortDate(a) - sortDate(b);
+    });
   }
 
   function card(item) {
@@ -131,6 +177,7 @@
           <div><dt>기간</dt><dd>${escapeHtml(item.period)}</dd></div>
         </dl>
         <div class="card-actions">
+          <button class="link-button favorite-button" type="button" data-favorite-button data-policy-id="${escapeHtml(item.id)}" aria-pressed="false">♡ 찜</button>
           <a class="link-button" href="${escapeHtml(detail)}">상세보기</a>
           <a class="link-button primary" href="${escapeHtml(official)}" target="_blank" rel="noopener noreferrer">공식 링크</a>
         </div>
@@ -143,8 +190,15 @@
     const items = filteredPolicies();
     $("[data-result-count]").textContent = items.length.toLocaleString("ko-KR");
     $("[data-summary-text]").textContent = `${state.region} · ${state.type} · ${state.status}`;
+    $("[data-sort]").value = state.sort;
+    const favorites = favoriteIds();
+    const favoriteToggle = $("[data-favorites-only]");
+    favoriteToggle.textContent = `찜한 정책 ${favorites.size.toLocaleString("ko-KR")}`;
+    favoriteToggle.classList.toggle("is-active", state.favoritesOnly);
+    favoriteToggle.setAttribute("aria-pressed", String(state.favoritesOnly));
     $("[data-policy-list]").innerHTML = items.map(card).join("");
     $("[data-empty]").hidden = items.length > 0;
+    window.dispatchEvent(new CustomEvent("youthzip:cards-rendered"));
   }
 
   function bindEvents() {
@@ -164,6 +218,8 @@
       state.type = "전체";
       state.status = "전체";
       state.keyword = "";
+      state.sort = "recommended";
+      state.favoritesOnly = false;
       $("[data-search]").value = "";
       render();
     });
@@ -172,9 +228,29 @@
       state.keyword = event.target.value.trim();
       render();
     });
+
+    $("[data-sort]").addEventListener("change", (event) => {
+      state.sort = event.target.value;
+      render();
+    });
+
+    $("[data-save-filters]").addEventListener("click", () => {
+      saveFilters();
+      const feedback = $("[data-save-feedback]");
+      feedback.textContent = "현재 조건을 이 기기에 저장했습니다.";
+      window.setTimeout(() => { feedback.textContent = ""; }, 2400);
+    });
+
+    $("[data-favorites-only]").addEventListener("click", () => {
+      state.favoritesOnly = !state.favoritesOnly;
+      render();
+    });
+
+    window.addEventListener("youthzip:favorites-changed", render);
   }
 
   async function boot() {
+    const restored = loadFilters();
     bindEvents();
     const response = await fetch(DATA_URL, { cache: "no-store" });
     if (!response.ok) throw new Error(`데이터를 불러오지 못했습니다. HTTP ${response.status}`);
@@ -182,6 +258,7 @@
     policies = payload.policies.map(normalize);
     $("[data-total-count]").textContent = policies.length.toLocaleString("ko-KR");
     $("[data-updated-at]").textContent = payload.updatedAt ? `업데이트 ${payload.updatedAt}` : "정적 데이터";
+    if (restored) $("[data-save-feedback]").textContent = "저장된 조건을 불러왔습니다.";
     render();
   }
 

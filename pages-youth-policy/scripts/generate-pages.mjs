@@ -59,7 +59,7 @@ const statuses = [
   ["closed", "마감"]
 ];
 
-const generatedDirs = ["policy", "region", "type", "status", "guides"];
+const generatedDirs = ["policy", "region", "type", "status", "guides", "calendar"];
 
 const staticPages = [
   {
@@ -302,6 +302,7 @@ function footer() {
 
 function pageShell({ title, description, body, path: pagePath = "/", type = "website", schema = [] }) {
   const schemaTags = schema.length ? `\n${schema.map(jsonLd).join("\n")}` : "";
+  const savedScript = pagePath.startsWith("/policy/") ? `\n  <script src="/assets/saved.js" defer></script>` : "";
   return `<!doctype html>
 <html lang="ko">
 <head>
@@ -326,12 +327,14 @@ ${schemaTags}
       <a href="/region/">지역별</a>
       <a href="/type/">유형별</a>
       <a href="/status/">상태별</a>
+      <a href="/calendar/">마감 캘린더</a>
     </nav>
   </header>
   <main class="content-page">
 ${body}
   </main>
 ${footer()}
+${savedScript}
 </body>
 </html>
 `;
@@ -383,8 +386,25 @@ function sortPolicies(items) {
   );
 }
 
+function relatedPolicies(item) {
+  const itemRegion = item.regionGroup || item.region || "";
+  return policies
+    .filter((candidate) => candidate.id !== item.id && candidate.status !== "마감")
+    .map((candidate) => ({
+      candidate,
+      score:
+        (candidate.type === item.type ? 3 : 0) +
+        ((candidate.regionGroup || candidate.region || "") === itemRegion ? 2 : 0) +
+        (candidate.status === "마감임박" ? 1 : 0)
+    }))
+    .sort((a, b) => b.score - a.score || collator.compare(a.candidate.title || "", b.candidate.title || ""))
+    .slice(0, 3)
+    .map(({ candidate }) => candidate);
+}
+
 function makeDetail(item) {
   const official = safeUrl(item.officialUrl);
+  const related = relatedPolicies(item);
   const detailPath = `/policy/${encodeURIComponent(item.id)}/`;
   const description = trimMeta(`${item.regionGroup || item.region || "전국"} ${item.type || "청년"} 정책(${item.id}): ${item.title}. 신청기간 ${item.period || "공식 공고 확인"}, 지원내용, 대상 조건과 공식 링크를 확인하세요.`);
   const body = `    <article class="detail-page">
@@ -408,7 +428,13 @@ function makeDetail(item) {
         <p>신청 전 모집 공고의 접수 기간, 세부 자격, 제출 서류를 공식 페이지에서 다시 확인하세요.</p>
       </section>
 
+      <section class="detail-section">
+        <h2>함께 볼 정책</h2>
+        <div class="related-links">${related.map((candidate) => `<a class="related-link" href="/policy/${encodeURIComponent(candidate.id)}/"><span>${esc(candidate.regionGroup || candidate.region)} · ${esc(candidate.type)}</span><strong>${esc(candidate.title)}</strong></a>`).join("")}</div>
+      </section>
+
       <div class="detail-actions">
+        <button class="link-button favorite-button" type="button" data-favorite-button data-policy-id="${esc(item.id)}" aria-pressed="false">♡ 이 정책 찜하기</button>
         ${official ? `<a class="link-button primary" href="${esc(official)}" target="_blank" rel="noopener noreferrer">공식 사이트에서 확인</a>` : ""}
         <a class="link-button" href="/region/${regionSlug(item)}/">${esc(item.regionGroup || item.region)} 정책 더보기</a>
         <a class="link-button" href="/type/${typeSlug(item)}/">${esc(item.type)} 정책 더보기</a>
@@ -644,6 +670,87 @@ function writeGuides() {
   for (const guide of guides) makeGuide(guide);
 }
 
+function koreaDateKey() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+}
+
+function calendarMonthKeys(count = 6) {
+  const [year, month] = koreaDateKey().split("-").map(Number);
+  return Array.from({ length: count }, (_, index) => {
+    const date = new Date(year, month - 1 + index, 1);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+  });
+}
+
+function calendarMonth(monthKey) {
+  const [year, month] = monthKey.split("-").map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const firstWeekday = new Date(year, month - 1, 1).getDay();
+  const todayKey = koreaDateKey();
+  const events = policies
+    .filter((item) => item.status !== "마감" && item.endDate?.startsWith(monthKey) && item.endDate >= todayKey)
+    .sort((a, b) => String(a.endDate).localeCompare(String(b.endDate)) || collator.compare(a.title || "", b.title || ""));
+  const byDate = new Map();
+  for (const item of events) {
+    if (!byDate.has(item.endDate)) byDate.set(item.endDate, []);
+    byDate.get(item.endDate).push(item);
+  }
+  const weekdays = ["일", "월", "화", "수", "목", "금", "토"]
+    .map((day) => `<div class="calendar-weekday">${day}</div>`).join("");
+  const blanks = Array.from({ length: firstWeekday }, () => `<div class="calendar-day is-empty" aria-hidden="true"></div>`).join("");
+  const days = Array.from({ length: daysInMonth }, (_, index) => {
+    const day = index + 1;
+    const dateKey = `${monthKey}-${String(day).padStart(2, "0")}`;
+    const dayEvents = byDate.get(dateKey) || [];
+    const visible = dayEvents.slice(0, 3).map((item) =>
+      `<a class="calendar-event" href="/policy/${encodeURIComponent(item.id)}/" title="${esc(item.title)}">${esc(item.title)}</a>`
+    ).join("");
+    const more = dayEvents.length > 3 ? `<a class="calendar-more" href="#agenda-${dateKey}">+${dayEvents.length - 3}개 전체 목록</a>` : "";
+    return `<div class="calendar-day"><span class="calendar-date">${day}</span>${visible}${more}</div>`;
+  }).join("");
+  const agenda = events.length
+    ? [...byDate.entries()].map(([dateKey, items]) => `        <section class="agenda-day" id="agenda-${dateKey}">
+          <h3>${Number(dateKey.slice(-2))}일 · ${items.length}개 마감</h3>
+          ${items.map((item) => `<a href="/policy/${encodeURIComponent(item.id)}/">${esc(item.title)}</a>`).join("\n          ")}
+        </section>`).join("\n")
+    : `        <p class="empty">확인된 마감 일정이 없습니다.</p>`;
+  return `      <section class="calendar-month" id="month-${monthKey}">
+        <h2>${year}년 ${month}월</h2>
+        <div class="calendar-grid" aria-label="${year}년 ${month}월 정책 마감 일정">${weekdays}${blanks}${days}</div>
+        <div class="calendar-agenda">${agenda}</div>
+      </section>`;
+}
+
+function writeCalendar() {
+  const months = calendarMonthKeys();
+  const monthNav = months.map((monthKey) => {
+    const [year, month] = monthKey.split("-").map(Number);
+    return `<a href="#month-${monthKey}">${year}년 ${month}월</a>`;
+  }).join("");
+  const body = `    <article class="detail-page calendar-page">
+      <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
+      <h1 class="page-title">청년지원사업 마감 캘린더</h1>
+      <p class="detail-summary">신청 가능한 청년 정책의 마감일을 월별로 확인하세요. 일정은 변동될 수 있으므로 신청 전 공식 공고를 다시 확인해야 합니다.</p>
+      <nav class="month-nav" aria-label="월 선택">${monthNav}</nav>
+${months.map(calendarMonth).join("\n")}
+    </article>`;
+  writePage("calendar/index.html", pageShell({
+    title: "청년지원사업 마감 캘린더",
+    description: "청년 지원금, 청년 월세 지원, 취업·주거 지원사업의 신청 마감일을 월별 캘린더에서 확인하세요.",
+    body,
+    path: "/calendar/",
+    schema: [breadcrumbSchema([
+      { name: "홈", path: "/" },
+      { name: "청년지원사업 마감 캘린더", path: "/calendar/" }
+    ])]
+  }));
+}
+
 function sitemapEntry(url, priority = "0.7") {
   const lastmod = payload.updatedAt || new Date().toISOString().slice(0, 10);
   return `  <url>
@@ -660,6 +767,7 @@ function writeSitemap() {
     sitemapEntry("/type/", "0.8"),
     sitemapEntry("/status/", "0.8"),
     sitemapEntry("/guides/", "0.8"),
+    sitemapEntry("/calendar/", "0.8"),
     ...regions.map(([slug]) => sitemapEntry(`/region/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...types.map(([slug]) => sitemapEntry(`/type/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...statuses.map(([slug]) => sitemapEntry(`/status/${slug}/`, slug === "all" ? "0.8" : "0.7")),
@@ -703,6 +811,7 @@ for (const [slug, label] of statuses) {
 
 writeStaticPages();
 writeGuides();
+writeCalendar();
 writeSitemap();
 
-console.log(`Generated ${policies.length} policy pages, ${regions.length + types.length + statuses.length + 3} category pages, ${guides.length + 1} guide pages, sitemap.xml, and robots.txt.`);
+console.log(`Generated ${policies.length} policy pages, ${regions.length + types.length + statuses.length + 3} category pages, ${guides.length + 1} guide pages, calendar, sitemap.xml, and robots.txt.`);
