@@ -337,6 +337,34 @@ h1 {
   color: var(--green-dark);
 }
 
+.quick-links {
+  display: flex;
+  flex: 1 1 280px;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.quick-link {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--green-dark);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.quick-link.is-active,
+.quick-link[aria-pressed="true"] {
+  border-color: var(--green-dark);
+  background: var(--green-dark);
+  color: #fff;
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1141,12 +1169,24 @@ h1 {
     scrollbar-width: none;
   }
 
+  .quick-links {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
   .result-tools::-webkit-scrollbar {
     display: none;
   }
 
+  .quick-links::-webkit-scrollbar {
+    display: none;
+  }
+
   .sort-control,
-  .tool-button {
+  .tool-button,
+  .quick-link {
     flex: 0 0 auto;
   }
 

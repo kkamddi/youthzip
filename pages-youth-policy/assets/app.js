@@ -263,6 +263,8 @@
     favoriteToggle.textContent = `찜한 정책 ${favorites.size.toLocaleString("ko-KR")}`;
     favoriteToggle.classList.toggle("is-active", state.favoritesOnly);
     favoriteToggle.setAttribute("aria-pressed", String(state.favoritesOnly));
+    $("[data-quick-closing]")?.classList.toggle("is-active", state.status === "마감임박" && !state.favoritesOnly);
+    $("[data-quick-new]")?.classList.toggle("is-active", state.sort === "latest" && !state.favoritesOnly);
     $("[data-policy-list]").innerHTML = items.map(card).join("");
     $("[data-empty]").hidden = items.length > 0;
     renderHomeSections();
@@ -307,6 +309,24 @@
       const feedback = $("[data-save-feedback]");
       feedback.textContent = "현재 조건을 이 기기에 저장했습니다.";
       window.setTimeout(() => { feedback.textContent = ""; }, 2400);
+    });
+
+    $("[data-quick-closing]")?.addEventListener("click", () => {
+      state.status = "마감임박";
+      state.sort = "deadline";
+      state.favoritesOnly = false;
+      state.keyword = "";
+      $("[data-search]").value = "";
+      render();
+    });
+
+    $("[data-quick-new]")?.addEventListener("click", () => {
+      state.status = "전체";
+      state.sort = "latest";
+      state.favoritesOnly = false;
+      state.keyword = "";
+      $("[data-search]").value = "";
+      render();
     });
 
     $("[data-favorites-only]").addEventListener("click", () => {
