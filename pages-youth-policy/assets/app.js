@@ -88,6 +88,17 @@
     return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
   }
 
+  function deadlineRank(item) {
+    if (item.effectiveStatus === "마감") return 2;
+    if (item.effectiveStatus === "예정") return 1;
+    return 0;
+  }
+
+  function deadlineDate(item) {
+    const date = parseDate(item.endDate) || parseDate(item.startDate);
+    return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
+  }
+
   function favoriteIds() {
     try {
       const values = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
@@ -213,7 +224,7 @@
         (!keyword || item.searchText.includes(keyword));
     }).sort((a, b) => {
       if (state.sort === "deadline") {
-        return (a.effectiveStatus === "마감") - (b.effectiveStatus === "마감") || sortDate(a) - sortDate(b);
+        return deadlineRank(a) - deadlineRank(b) || deadlineDate(a) - deadlineDate(b);
       }
       if (state.sort === "latest") {
         return (parseDate(b.startDate)?.getTime() || 0) - (parseDate(a.startDate)?.getTime() || 0);
