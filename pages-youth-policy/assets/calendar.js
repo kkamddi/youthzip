@@ -4,6 +4,10 @@
   if (!tablist || panels.length === 0) return;
 
   const tabs = [...tablist.querySelectorAll("[data-month-target]")];
+  const dialog = document.querySelector("[data-calendar-dialog]");
+  const dialogTitle = dialog?.querySelector("[data-calendar-dialog-title]");
+  const dialogList = dialog?.querySelector("[data-calendar-dialog-list]");
+  const dialogClose = dialog?.querySelector("[data-calendar-dialog-close]");
 
   function selectMonth(tab, focus = false) {
     const targetId = tab.dataset.monthTarget;
@@ -40,5 +44,38 @@
 
     event.preventDefault();
     selectMonth(tabs[nextIndex], true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-agenda-target]");
+    if (!trigger || !dialog || !dialogTitle || !dialogList) return;
+
+    const source = document.getElementById(trigger.dataset.agendaTarget);
+    if (!source) return;
+
+    dialogTitle.textContent = source.querySelector("h3")?.textContent || "마감 정책";
+    dialogList.replaceChildren(
+      ...[...source.querySelectorAll("a")].map((link) => link.cloneNode(true))
+    );
+
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
+  });
+
+  function closeDialog() {
+    if (!dialog) return;
+    if (typeof dialog.close === "function") {
+      dialog.close();
+    } else {
+      dialog.removeAttribute("open");
+    }
+  }
+
+  dialogClose?.addEventListener("click", closeDialog);
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) closeDialog();
   });
 })();

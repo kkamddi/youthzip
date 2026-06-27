@@ -710,8 +710,13 @@ function calendarMonth(monthKey, isActive = false) {
     const visible = dayEvents.slice(0, 3).map((item) =>
       `<a class="calendar-event" href="/policy/${encodeURIComponent(item.id)}/" title="${esc(item.title)}">${esc(item.title)}</a>`
     ).join("");
-    const more = dayEvents.length > 3 ? `<a class="calendar-more" href="#agenda-${dateKey}">+${dayEvents.length - 3}개 전체 목록</a>` : "";
-    return `<div class="calendar-day"><span class="calendar-date">${day}</span>${visible}${more}</div>`;
+    const more = dayEvents.length > 3
+      ? `<button class="calendar-more" type="button" data-agenda-target="agenda-${dateKey}">${dayEvents.length}개 전체 목록</button>`
+      : "";
+    const mobileCount = dayEvents.length
+      ? `<button class="calendar-day-count" type="button" data-agenda-target="agenda-${dateKey}" aria-label="${year}년 ${month}월 ${day}일 마감 정책 ${dayEvents.length}개 보기">${dayEvents.length}개</button>`
+      : "";
+    return `<div class="calendar-day"><span class="calendar-date">${day}</span>${visible}${more}${mobileCount}</div>`;
   }).join("");
   const agenda = events.length
     ? [...byDate.entries()].map(([dateKey, items]) => `        <section class="agenda-day" id="agenda-${dateKey}">
@@ -739,6 +744,13 @@ function writeCalendar() {
       <p class="detail-summary">신청 가능한 청년 정책의 마감일을 월별로 확인하세요. 일정은 변동될 수 있으므로 신청 전 공식 공고를 다시 확인해야 합니다.</p>
       <nav class="month-nav" aria-label="월 선택" role="tablist">${monthNav}</nav>
 ${months.map((monthKey, index) => calendarMonth(monthKey, index === 0)).join("\n")}
+      <dialog class="calendar-dialog" data-calendar-dialog aria-labelledby="calendar-dialog-title">
+        <div class="calendar-dialog-head">
+          <h2 id="calendar-dialog-title" data-calendar-dialog-title>마감 정책</h2>
+          <button class="calendar-dialog-close" type="button" data-calendar-dialog-close aria-label="팝업 닫기">×</button>
+        </div>
+        <div class="calendar-dialog-list" data-calendar-dialog-list></div>
+      </dialog>
     </article>`;
   writePage("calendar/index.html", pageShell({
     title: "청년지원사업 마감 캘린더",

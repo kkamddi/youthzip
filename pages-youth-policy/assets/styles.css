@@ -796,16 +796,23 @@ h1 {
 .calendar-more {
   display: block;
   margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 800;
-  text-decoration: none;
+  text-align: left;
+}
+
+.calendar-day-count {
+  display: none;
 }
 
 .calendar-agenda {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 20px;
+  display: none;
 }
 
 .agenda-day {
@@ -822,6 +829,61 @@ h1 {
 }
 
 .agenda-day a {
+  color: var(--green-dark);
+  font-weight: 800;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.calendar-dialog {
+  width: min(560px, calc(100% - 32px));
+  max-height: min(720px, calc(100vh - 48px));
+  padding: 0;
+  border: 1px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+}
+
+.calendar-dialog::backdrop {
+  background: rgb(17 35 23 / 55%);
+}
+
+.calendar-dialog-head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.calendar-dialog-head h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.calendar-dialog-close {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.calendar-dialog-list {
+  display: grid;
+  max-height: calc(100vh - 150px);
+  padding: 8px 20px 20px;
+  overflow-y: auto;
+}
+
+.calendar-dialog-list a {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
   color: var(--green-dark);
   font-weight: 800;
   line-height: 1.45;
@@ -990,10 +1052,39 @@ h1 {
   }
 
   .calendar-grid {
+    display: grid;
+  }
+
+  .calendar-weekday {
+    padding: 7px 2px;
+    font-size: 10px;
+  }
+
+  .calendar-day {
+    min-height: 58px;
+    padding: 5px 3px;
+  }
+
+  .calendar-date {
+    margin-bottom: 4px;
+    font-size: 11px;
+  }
+
+  .calendar-event,
+  .calendar-more {
     display: none;
   }
 
-  .calendar-agenda {
-    grid-template-columns: 1fr;
+  .calendar-day-count {
+    display: block;
+    width: 100%;
+    padding: 3px 1px;
+    border: 0;
+    background: var(--panel-strong);
+    color: var(--green-dark);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 9px;
+    font-weight: 900;
   }
 }
