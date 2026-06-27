@@ -302,7 +302,10 @@ function footer() {
 
 function pageShell({ title, description, body, path: pagePath = "/", type = "website", schema = [] }) {
   const schemaTags = schema.length ? `\n${schema.map(jsonLd).join("\n")}` : "";
-  const savedScript = pagePath.startsWith("/policy/") ? `\n  <script src="/assets/saved.js" defer></script>` : "";
+  const pageScripts = [
+    pagePath.startsWith("/policy/") ? `\n  <script src="/assets/saved.js" defer></script>` : "",
+    pagePath === "/calendar/" ? `\n  <script src="/assets/calendar.js" defer></script>` : ""
+  ].join("");
   return `<!doctype html>
 <html lang="ko">
 <head>
@@ -324,9 +327,6 @@ ${schemaTags}
     <nav class="top-nav" aria-label="주요 메뉴">
       <a href="/">정책 찾기</a>
       <a href="/guides/">가이드</a>
-      <a href="/region/">지역별</a>
-      <a href="/type/">유형별</a>
-      <a href="/status/">상태별</a>
       <a href="/calendar/">마감 캘린더</a>
     </nav>
   </header>
@@ -334,7 +334,7 @@ ${schemaTags}
 ${body}
   </main>
 ${footer()}
-${savedScript}
+${pageScripts}
 </body>
 </html>
 `;
@@ -687,7 +687,7 @@ function calendarMonthKeys(count = 6) {
   });
 }
 
-function calendarMonth(monthKey) {
+function calendarMonth(monthKey, isActive = false) {
   const [year, month] = monthKey.split("-").map(Number);
   const daysInMonth = new Date(year, month, 0).getDate();
   const firstWeekday = new Date(year, month - 1, 1).getDay();
@@ -719,7 +719,7 @@ function calendarMonth(monthKey) {
           ${items.map((item) => `<a href="/policy/${encodeURIComponent(item.id)}/">${esc(item.title)}</a>`).join("\n          ")}
         </section>`).join("\n")
     : `        <p class="empty">확인된 마감 일정이 없습니다.</p>`;
-  return `      <section class="calendar-month" id="month-${monthKey}">
+  return `      <section class="calendar-month" id="month-${monthKey}" role="tabpanel" aria-labelledby="tab-${monthKey}"${isActive ? "" : " hidden"}>
         <h2>${year}년 ${month}월</h2>
         <div class="calendar-grid" aria-label="${year}년 ${month}월 정책 마감 일정">${weekdays}${blanks}${days}</div>
         <div class="calendar-agenda">${agenda}</div>
@@ -728,16 +728,17 @@ function calendarMonth(monthKey) {
 
 function writeCalendar() {
   const months = calendarMonthKeys();
-  const monthNav = months.map((monthKey) => {
+  const monthNav = months.map((monthKey, index) => {
     const [year, month] = monthKey.split("-").map(Number);
-    return `<a href="#month-${monthKey}">${year}년 ${month}월</a>`;
+    const selected = index === 0;
+    return `<button id="tab-${monthKey}" type="button" role="tab" aria-controls="month-${monthKey}" aria-selected="${selected}" tabindex="${selected ? "0" : "-1"}" class="${selected ? "is-active" : ""}" data-month-target="month-${monthKey}">${year}년 ${month}월</button>`;
   }).join("");
   const body = `    <article class="detail-page calendar-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">청년지원사업 마감 캘린더</h1>
       <p class="detail-summary">신청 가능한 청년 정책의 마감일을 월별로 확인하세요. 일정은 변동될 수 있으므로 신청 전 공식 공고를 다시 확인해야 합니다.</p>
-      <nav class="month-nav" aria-label="월 선택">${monthNav}</nav>
-${months.map(calendarMonth).join("\n")}
+      <nav class="month-nav" aria-label="월 선택" role="tablist">${monthNav}</nav>
+${months.map((monthKey, index) => calendarMonth(monthKey, index === 0)).join("\n")}
     </article>`;
   writePage("calendar/index.html", pageShell({
     title: "청년지원사업 마감 캘린더",

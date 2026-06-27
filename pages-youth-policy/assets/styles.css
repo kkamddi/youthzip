@@ -705,21 +705,32 @@ h1 {
   display: none;
 }
 
-.month-nav a {
+.month-nav button {
   flex: 0 0 auto;
   min-height: 38px;
   padding: 9px 12px;
   border: 1px solid var(--ink);
   background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
   font-weight: 900;
-  text-decoration: none;
   white-space: nowrap;
+}
+
+.month-nav button.is-active {
+  background: var(--ink);
+  color: #fff;
 }
 
 .calendar-month {
   display: grid;
   gap: 12px;
   scroll-margin-top: 84px;
+}
+
+.calendar-month[hidden] {
+  display: none;
 }
 
 .calendar-month h2 {
