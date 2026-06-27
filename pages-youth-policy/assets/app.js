@@ -14,7 +14,8 @@
     status: "전체",
     keyword: "",
     sort: "recommended",
-    favoritesOnly: false
+    favoritesOnly: false,
+    quickMode: ""
   };
 
   let policies = [];
@@ -207,6 +208,7 @@
       return regionMatch &&
         (state.type === "전체" || item.type === state.type) &&
         (state.status === "전체" || item.effectiveStatus === state.status) &&
+        (state.quickMode !== "new" || item.effectiveStatus !== "마감") &&
         (!state.favoritesOnly || favorites.has(String(item.id))) &&
         (!keyword || item.searchText.includes(keyword));
     }).sort((a, b) => {
@@ -263,8 +265,8 @@
     favoriteToggle.textContent = `찜한 정책 ${favorites.size.toLocaleString("ko-KR")}`;
     favoriteToggle.classList.toggle("is-active", state.favoritesOnly);
     favoriteToggle.setAttribute("aria-pressed", String(state.favoritesOnly));
-    $("[data-quick-closing]")?.classList.toggle("is-active", state.status === "마감임박" && !state.favoritesOnly);
-    $("[data-quick-new]")?.classList.toggle("is-active", state.sort === "latest" && !state.favoritesOnly);
+    $("[data-quick-closing]")?.classList.toggle("is-active", state.quickMode === "closing" && !state.favoritesOnly);
+    $("[data-quick-new]")?.classList.toggle("is-active", state.quickMode === "new" && !state.favoritesOnly);
     $("[data-policy-list]").innerHTML = items.map(card).join("");
     $("[data-empty]").hidden = items.length > 0;
     renderHomeSections();
@@ -278,6 +280,7 @@
         const group = button.closest("[data-filter]")?.dataset.filter;
         if (group && state[group] !== undefined) {
           state[group] = button.dataset.value;
+          state.quickMode = "";
           render();
         }
       }
@@ -290,17 +293,20 @@
       state.keyword = "";
       state.sort = "recommended";
       state.favoritesOnly = false;
+      state.quickMode = "";
       $("[data-search]").value = "";
       render();
     });
 
     $("[data-search]").addEventListener("input", (event) => {
       state.keyword = event.target.value.trim();
+      state.quickMode = "";
       render();
     });
 
     $("[data-sort]").addEventListener("change", (event) => {
       state.sort = event.target.value;
+      state.quickMode = "";
       render();
     });
 
@@ -315,6 +321,7 @@
       state.status = "마감임박";
       state.sort = "deadline";
       state.favoritesOnly = false;
+      state.quickMode = "closing";
       state.keyword = "";
       $("[data-search]").value = "";
       render();
@@ -324,6 +331,7 @@
       state.status = "전체";
       state.sort = "latest";
       state.favoritesOnly = false;
+      state.quickMode = "new";
       state.keyword = "";
       $("[data-search]").value = "";
       render();
@@ -331,6 +339,7 @@
 
     $("[data-favorites-only]").addEventListener("click", () => {
       state.favoritesOnly = !state.favoritesOnly;
+      state.quickMode = "";
       render();
     });
 
