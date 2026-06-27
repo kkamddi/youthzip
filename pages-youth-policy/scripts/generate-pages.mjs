@@ -721,7 +721,7 @@ function calendarMonth(monthKey, isActive = false) {
   const agenda = events.length
     ? [...byDate.entries()].map(([dateKey, items]) => `        <section class="agenda-day" id="agenda-${dateKey}">
           <h3>${Number(dateKey.slice(-2))}일 · ${items.length}개 마감</h3>
-          ${items.map((item) => `<a href="/policy/${encodeURIComponent(item.id)}/">${esc(item.title)}</a>`).join("\n          ")}
+          ${items.map((item) => `<a href="/policy/${encodeURIComponent(item.id)}/" data-type="${esc(item.type || "기타")}">${esc(item.title)}</a>`).join("\n          ")}
         </section>`).join("\n")
     : `        <p class="empty">확인된 마감 일정이 없습니다.</p>`;
   return `      <section class="calendar-month" id="month-${monthKey}" role="tabpanel" aria-labelledby="tab-${monthKey}"${isActive ? "" : " hidden"}>

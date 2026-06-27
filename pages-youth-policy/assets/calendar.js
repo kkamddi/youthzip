@@ -54,8 +54,23 @@
     if (!source) return;
 
     dialogTitle.textContent = source.querySelector("h3")?.textContent || "마감 정책";
+    const groupedLinks = [...source.querySelectorAll("a")].reduce((groups, link) => {
+      const type = link.dataset.type || "기타";
+      if (!groups.has(type)) groups.set(type, []);
+      groups.get(type).push(link);
+      return groups;
+    }, new Map());
+
     dialogList.replaceChildren(
-      ...[...source.querySelectorAll("a")].map((link) => link.cloneNode(true))
+      ...[...groupedLinks.entries()].map(([type, links]) => {
+        const section = document.createElement("section");
+        section.className = "calendar-dialog-group";
+
+        const heading = document.createElement("h3");
+        heading.textContent = `${type} ${links.length}개`;
+        section.append(heading, ...links.map((link) => link.cloneNode(true)));
+        return section;
+      })
     );
 
     if (typeof dialog.showModal === "function") {

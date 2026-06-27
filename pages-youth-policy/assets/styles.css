@@ -876,12 +876,26 @@ h1 {
 
 .calendar-dialog-list {
   display: grid;
+  gap: 18px;
   max-height: calc(100vh - 150px);
-  padding: 8px 20px 20px;
+  padding: 16px 20px 22px;
   overflow-y: auto;
 }
 
-.calendar-dialog-list a {
+.calendar-dialog-group {
+  display: grid;
+  gap: 0;
+}
+
+.calendar-dialog-group h3 {
+  margin: 0;
+  padding: 0 0 8px;
+  border-bottom: 2px solid var(--green-dark);
+  color: var(--green-dark);
+  font-size: 15px;
+}
+
+.calendar-dialog-group a {
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
   color: var(--green-dark);
