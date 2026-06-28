@@ -16,6 +16,7 @@ const collator = new Intl.Collator("ko-KR");
 const siteUrl = "https://youthzip.pages.dev";
 const siteName = "청년혜택.zip";
 const defaultOgImage = `${siteUrl}/assets/og-image.svg`;
+const cloudflareAnalyticsToken = "e5c98200d48a4ba69c7cf14ca94eac2d";
 
 const regions = [
   ["all", "전체"],
@@ -344,6 +345,10 @@ function footer() {
   </footer>`;
 }
 
+function analyticsScript() {
+  return `  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${cloudflareAnalyticsToken}"}'></script>`;
+}
+
 function pageShell({ title, description, body, path: pagePath = "/", type = "website", schema = [] }) {
   const schemaTags = schema.length ? `\n${schema.map(jsonLd).join("\n")}` : "";
   const pageScripts = [
@@ -378,6 +383,7 @@ ${body}
   </main>
 ${footer()}
 ${pageScripts}
+${analyticsScript()}
 </body>
 </html>
 `;
