@@ -371,6 +371,28 @@ h1 {
   gap: 14px;
 }
 
+.load-more-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.load-more-wrap[hidden] {
+  display: none;
+}
+
+.load-more-button {
+  min-width: 128px;
+}
+
+.load-more-wrap p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .home-spotlight {
   display: grid;
   grid-template-columns: 1fr 1fr;

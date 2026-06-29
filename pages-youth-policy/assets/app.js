@@ -4,6 +4,7 @@
   const DATA_URL = "/data/policies.json";
   const FILTERS_KEY = "youthzip:filters";
   const FAVORITES_KEY = "youthzip:favorites";
+  const INITIAL_POLICY_LIMIT = 30;
   const REGIONS = ["전체", "전국", "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
   const TYPES = ["전체", "주거", "취업", "금융", "교육", "교통", "문화", "복지", "창업"];
   const STATUSES = ["전체", "신청중", "마감임박", "예정", "마감"];
@@ -15,7 +16,8 @@
     keyword: "",
     sort: "recommended",
     favoritesOnly: false,
-    quickMode: ""
+    quickMode: "",
+    visibleLimit: INITIAL_POLICY_LIMIT
   };
 
   let policies = [];
@@ -129,6 +131,19 @@
       status: state.status,
       sort: state.sort
     }));
+  }
+
+  function resetVisibleLimit() {
+    state.visibleLimit = INITIAL_POLICY_LIMIT;
+  }
+
+  function isDefaultListing() {
+    return state.region === REGIONS[0] &&
+      state.type === TYPES[0] &&
+      state.status === STATUSES[0] &&
+      !state.keyword &&
+      !state.favoritesOnly &&
+      !state.quickMode;
   }
 
   function pill(value, active) {
@@ -268,6 +283,8 @@
   function render() {
     renderPills();
     const items = filteredPolicies();
+    const shouldLimit = isDefaultListing();
+    const visibleItems = shouldLimit ? items.slice(0, state.visibleLimit) : items;
     $("[data-result-count]").textContent = items.length.toLocaleString("ko-KR");
     $("[data-summary-text]").textContent = `${state.region} · ${state.type} · ${state.status}`;
     $("[data-sort]").value = state.sort;
@@ -278,8 +295,17 @@
     favoriteToggle.setAttribute("aria-pressed", String(state.favoritesOnly));
     $("[data-quick-closing]")?.classList.toggle("is-active", state.quickMode === "closing" && !state.favoritesOnly);
     $("[data-quick-new]")?.classList.toggle("is-active", state.quickMode === "new" && !state.favoritesOnly);
-    $("[data-policy-list]").innerHTML = items.map(card).join("");
+    $("[data-policy-list]").innerHTML = visibleItems.map(card).join("");
     $("[data-empty]").hidden = items.length > 0;
+    const loadMoreWrap = $("[data-load-more-wrap]");
+    const loadMoreSummary = $("[data-load-more-summary]");
+    if (loadMoreWrap) {
+      const hasMore = shouldLimit && state.visibleLimit < items.length;
+      loadMoreWrap.hidden = !hasMore;
+      if (loadMoreSummary) {
+        loadMoreSummary.textContent = `${visibleItems.length.toLocaleString("ko-KR")}개 표시 중 / 전체 ${items.length.toLocaleString("ko-KR")}개`;
+      }
+    }
     renderHomeSections();
     window.dispatchEvent(new CustomEvent("youthzip:cards-rendered"));
   }
@@ -292,6 +318,7 @@
         if (group && state[group] !== undefined) {
           state[group] = button.dataset.value;
           state.quickMode = "";
+          resetVisibleLimit();
           render();
         }
       }
@@ -305,6 +332,7 @@
       state.sort = "recommended";
       state.favoritesOnly = false;
       state.quickMode = "";
+      resetVisibleLimit();
       $("[data-search]").value = "";
       render();
     });
@@ -312,12 +340,14 @@
     $("[data-search]").addEventListener("input", (event) => {
       state.keyword = event.target.value.trim();
       state.quickMode = "";
+      resetVisibleLimit();
       render();
     });
 
     $("[data-sort]").addEventListener("change", (event) => {
       state.sort = event.target.value;
       state.quickMode = "";
+      resetVisibleLimit();
       render();
     });
 
@@ -334,6 +364,7 @@
       state.favoritesOnly = false;
       state.quickMode = "closing";
       state.keyword = "";
+      resetVisibleLimit();
       $("[data-search]").value = "";
       render();
     });
@@ -344,6 +375,7 @@
       state.favoritesOnly = false;
       state.quickMode = "new";
       state.keyword = "";
+      resetVisibleLimit();
       $("[data-search]").value = "";
       render();
     });
@@ -351,6 +383,12 @@
     $("[data-favorites-only]").addEventListener("click", () => {
       state.favoritesOnly = !state.favoritesOnly;
       state.quickMode = "";
+      resetVisibleLimit();
+      render();
+    });
+
+    $("[data-load-more]")?.addEventListener("click", () => {
+      state.visibleLimit += INITIAL_POLICY_LIMIT;
       render();
     });
 
