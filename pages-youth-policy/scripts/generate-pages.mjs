@@ -222,6 +222,66 @@ const guides = [
       ["전국 정책과 지역 정책은 어떻게 다르나요?", "전국 정책은 지역 제한이 없거나 넓고, 지역 정책은 특정 시·도 또는 시·군·구 거주자를 대상으로 하는 경우가 많습니다."],
       ["이사 예정이면 어느 지역 정책을 봐야 하나요?", "신청일 기준 주민등록지나 실제 거주지 기준이 중요합니다. 이사 예정만으로 신청 가능한지는 공고별로 다릅니다."]
     ]
+  },
+  {
+    slug: "youth-transport-support",
+    title: "청년 교통비 지원 정책 모아보기",
+    description: "청년 교통비 지원, 대중교통비 지원, 면접 교통비, 통학·출퇴근 지원사업을 신청 상태와 공식 링크 기준으로 확인하세요.",
+    intro: "교통비 지원은 금액이 크지 않아 보여도 통학, 출퇴근, 면접 준비가 반복되는 청년에게 체감이 큽니다. 지역, 나이, 이용 교통수단, 신청 기간을 함께 확인하면 바로 신청 가능한 정책을 빠르게 좁힐 수 있습니다.",
+    sections: [
+      ["먼저 확인할 조건", "대부분의 교통비 지원은 거주지, 나이, 대중교통 이용 실적, 취업 준비 여부를 함께 봅니다. 면접 교통비는 면접 증빙과 신청 횟수 제한을 확인해야 합니다."],
+      ["찾는 방법", "유형은 교통 또는 취업을 함께 보고, 검색어에 교통비, 대중교통, 면접, 통학, 출퇴근을 입력하면 관련 정책을 더 쉽게 찾을 수 있습니다."]
+    ],
+    related: (item) => item.type === "교통" || /교통|대중교통|교통비|통학|출퇴근|면접비|면접/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["청년 교통비 지원은 현금으로 받나요?", "사업마다 다릅니다. 현금 지급, 포인트, 지역화폐, 교통카드 환급처럼 방식이 다르므로 공식 공고에서 지급 방식을 확인해야 합니다."],
+      ["면접 교통비와 일반 교통비 지원을 같이 받을 수 있나요?", "중복 수혜 제한은 사업별로 다릅니다. 같은 지자체의 유사 지원을 받고 있다면 공식 공고의 중복 제한을 먼저 확인하세요."]
+    ]
+  },
+  {
+    slug: "youth-startup-grant",
+    title: "청년 창업 지원금·창업 지원사업 찾는 법",
+    description: "청년 창업 지원금, 예비창업자 지원, 창업 교육, 사업화 자금, 지역 정착 창업 지원사업을 공식 링크 기준으로 확인하세요.",
+    intro: "청년 창업 지원은 단순 지원금뿐 아니라 창업 교육, 공간, 멘토링, 사업화 자금, 지역 정착 지원으로 나뉩니다. 창업 단계와 지역 조건을 먼저 나누면 본인에게 맞는 정책을 더 빨리 찾을 수 있습니다.",
+    sections: [
+      ["먼저 확인할 조건", "예비창업자인지, 창업 후 몇 년 이내인지, 사업장 소재지가 어디인지, 업종 제한이 있는지 확인해야 합니다. 일부 사업은 팀 구성이나 지역 이전 조건을 요구합니다."],
+      ["찾는 방법", "유형은 창업으로 선택하고, 검색어에 예비창업, 사업화, 창업교육, 창업공간, 지역정착을 넣어보세요. 마감임박 사업은 모집 인원과 제출 서류를 먼저 확인해야 합니다."]
+    ],
+    related: (item) => item.type === "창업" || /창업|예비창업|사업화|스타트업|창업공간|지역정착/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["사업자등록 전에도 청년 창업 지원금을 신청할 수 있나요?", "예비창업자를 대상으로 하는 사업은 가능할 수 있습니다. 반대로 초기창업자만 가능한 사업도 있으니 창업 단계 기준을 확인해야 합니다."],
+      ["창업 지원사업은 지역 제한이 있나요?", "지역 정착형 창업 지원은 거주지나 사업장 소재지 조건이 붙는 경우가 많습니다. 공고의 지역 조건과 이전 조건을 꼭 확인하세요."]
+    ]
+  },
+  {
+    slug: "youth-mental-health-support",
+    title: "청년 마음건강 지원·상담 지원사업 모아보기",
+    description: "청년 마음건강 지원, 심리상담, 정신건강, 고립·은둔 청년 지원사업을 신청 기간과 공식 링크 기준으로 확인하세요.",
+    intro: "마음건강 지원은 심리상담, 검사, 집단 프로그램, 고립·은둔 청년 지원처럼 형태가 다양합니다. 거주지와 신청 가능 인원, 선착순 여부를 먼저 확인하면 놓치는 정책을 줄일 수 있습니다.",
+    sections: [
+      ["먼저 확인할 조건", "상담 지원은 지역 거주 조건, 나이, 상담 횟수, 본인 부담금 여부가 중요합니다. 선착순 모집은 신청 시작 시각과 제출 방식까지 확인해야 합니다."],
+      ["찾는 방법", "유형은 복지 또는 교육까지 함께 보고, 검색어에 마음건강, 심리상담, 정신건강, 고립, 은둔을 입력해보세요."]
+    ],
+    related: (item) => item.type === "복지" && /마음|심리|상담|정신건강|고립|은둔/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["청년 마음건강 지원은 병원 진료와 같은 건가요?", "대부분은 상담, 검사, 프로그램 지원이며 의료 진료와는 다를 수 있습니다. 필요한 경우 공식 기관 안내에 따라 전문 의료기관을 확인해야 합니다."],
+      ["상담 내용이 공개되나요?", "상담 정보 처리 방식은 운영기관의 개인정보처리방침을 따릅니다. 민감한 정보가 포함될 수 있으므로 신청 전 개인정보 처리 내용을 확인하세요."]
+    ]
+  },
+  {
+    slug: "youth-finance-savings-support",
+    title: "청년 금융·저축 지원 정책 모아보기",
+    description: "청년 금융 지원, 저축 지원, 자산형성, 대출이자 지원, 생활안정 자금 정책을 신청 조건과 공식 링크 기준으로 확인하세요.",
+    intro: "금융·저축 지원은 자산형성, 대출이자, 생활안정 자금, 신용회복처럼 목적이 다릅니다. 소득 기준과 중복 수혜 제한이 중요하므로 신청 전 자격 조건을 꼼꼼히 봐야 합니다.",
+    sections: [
+      ["먼저 확인할 조건", "소득, 재산, 근로 여부, 기존 금융지원 수혜 여부가 자주 쓰입니다. 저축 지원은 본인 납입 조건과 유지 기간을 함께 확인해야 합니다."],
+      ["찾는 방법", "유형은 금융으로 선택하고, 검색어에 저축, 자산형성, 대출이자, 생활안정, 신용을 넣어보세요. 신청중과 마감임박 정책을 먼저 보면 바로 접수 가능한 사업을 찾기 쉽습니다."]
+    ],
+    related: (item) => item.type === "금융" || /저축|자산|금융|대출|이자|생활안정|신용/.test(`${item.title} ${item.summary} ${item.support}`),
+    faq: [
+      ["청년 금융 지원은 누구나 신청할 수 있나요?", "대부분 소득, 거주지, 근로 여부, 기존 수혜 여부를 봅니다. 지원금 성격인지 대출·이자 지원인지도 공고별로 다릅니다."],
+      ["저축 지원은 중도 해지하면 어떻게 되나요?", "사업마다 환수나 지원금 미지급 기준이 다릅니다. 납입 기간, 유지 조건, 해지 시 불이익을 공식 공고에서 확인해야 합니다."]
+    ]
   }
 ];
 
@@ -330,6 +390,32 @@ function breadcrumbSchema(items) {
   };
 }
 
+function itemListSchema(name, description, items, itemUrl) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    description,
+    numberOfItems: items.length,
+    itemListElement: items.slice(0, 50).map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.title || item.name,
+      url: absoluteUrl(itemUrl(item))
+    }))
+  };
+}
+
+function organizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteName,
+    url: siteUrl,
+    logo: `${siteUrl}/assets/favicon.png`
+  };
+}
+
 function footer() {
   return `  <footer class="site-footer">
     <nav class="footer-links" aria-label="사이트 안내">
@@ -345,7 +431,8 @@ function footer() {
 }
 
 function pageShell({ title, description, body, path: pagePath = "/", type = "website", schema = [] }) {
-  const schemaTags = schema.length ? `\n${schema.map(jsonLd).join("\n")}` : "";
+  const schemas = [organizationSchema(), ...schema];
+  const schemaTags = schemas.length ? `\n${schemas.map(jsonLd).join("\n")}` : "";
   const pageScripts = [
     pagePath.startsWith("/policy/") ? `\n  <script src="/assets/saved.js" defer></script>` : "",
     pagePath === "/calendar/" ? `\n  <script src="/assets/calendar.js" defer></script>` : ""
@@ -511,7 +598,32 @@ function makeDetail(item) {
           url: siteUrl
         },
         mainEntityOfPage: absoluteUrl(detailPath)
-      }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "GovernmentService",
+        name: policySeoTitle(item),
+        description,
+        url: absoluteUrl(detailPath),
+        serviceType: `${item.type || "청년"} 청년지원사업`,
+        areaServed: item.regionGroup || item.region || "전국",
+        audience: {
+          "@type": "Audience",
+          audienceType: "청년"
+        },
+        provider: {
+          "@type": "Organization",
+          name: siteName,
+          url: siteUrl
+        },
+        sameAs: official || undefined
+      },
+      itemListSchema(
+        `${policySeoTitle(item)} 관련 정책`,
+        "같은 유형과 지역에서 함께 확인할 수 있는 청년지원사업입니다.",
+        related,
+        (candidate) => `/policy/${encodeURIComponent(candidate.id)}/`
+      )
     ]
   }));
 }
@@ -526,10 +638,18 @@ function optionIndex(kind, heading, description, options) {
     title: heading,
     description,
     path: `/${kind}/`,
-    schema: [breadcrumbSchema([
-      { name: "홈", path: "/" },
-      { name: heading, path: `/${kind}/` }
-    ])],
+    schema: [
+      breadcrumbSchema([
+        { name: "홈", path: "/" },
+        { name: heading, path: `/${kind}/` }
+      ]),
+      itemListSchema(
+        heading,
+        description,
+        options.map(([slug, label]) => ({ slug, name: label })),
+        (item) => `/${kind}/${item.slug}/`
+      )
+    ],
     body: `    <section class="list-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">${esc(heading)}</h1>
@@ -583,11 +703,19 @@ function listPage(kind, slug, label, items) {
     description: pageDescription,
     body,
     path: `/${kind}/${slug}/`,
-    schema: [breadcrumbSchema([
-      { name: "홈", path: "/" },
-      { name: kindLabels[kind], path: `/${kind}/` },
-      { name: pageTitle, path: `/${kind}/${slug}/` }
-    ])]
+    schema: [
+      breadcrumbSchema([
+        { name: "홈", path: "/" },
+        { name: kindLabels[kind], path: `/${kind}/` },
+        { name: pageTitle, path: `/${kind}/${slug}/` }
+      ]),
+      itemListSchema(
+        pageTitle,
+        pageDescription,
+        sorted,
+        (item) => `/policy/${encodeURIComponent(item.id)}/`
+      )
+    ]
   }));
 }
 
@@ -643,10 +771,18 @@ function makeGuideIndex() {
     description: "청년 월세 지원, 청년 취업 지원, 서울 청년 지원금, 경기도 청년 지원금을 주제별로 쉽게 찾아보세요.",
     body,
     path: "/guides/",
-    schema: [breadcrumbSchema([
-      { name: "홈", path: "/" },
-      { name: "청년 혜택 검색 가이드", path: "/guides/" }
-    ])]
+    schema: [
+      breadcrumbSchema([
+        { name: "홈", path: "/" },
+        { name: "청년 혜택 검색 가이드", path: "/guides/" }
+      ]),
+      itemListSchema(
+        "청년 혜택 검색 가이드",
+        "청년 지원금과 청년 정책을 주제별로 찾을 수 있는 가이드 목록입니다.",
+        guides.map((guide) => ({ title: guide.title, slug: guide.slug })),
+        (guide) => `/guides/${guide.slug}/`
+      )
+    ]
   }));
 }
 
@@ -703,7 +839,13 @@ ${sections}
         },
         mainEntityOfPage: absoluteUrl(guidePath)
       },
-      guideFaqSchema(guide)
+      guideFaqSchema(guide),
+      itemListSchema(
+        `${guide.title} 관련 정책`,
+        guide.description,
+        related,
+        (item) => `/policy/${encodeURIComponent(item.id)}/`
+      )
     ]
   }));
 }

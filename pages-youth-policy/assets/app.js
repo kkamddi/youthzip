@@ -359,6 +359,11 @@
 
   async function boot() {
     const restored = loadFilters();
+    const queryKeyword = new URLSearchParams(window.location.search).get("q");
+    if (queryKeyword) {
+      state.keyword = queryKeyword.trim();
+      state.quickMode = "";
+    }
     bindEvents();
     const response = await fetch(DATA_URL, { cache: "no-store" });
     if (!response.ok) throw new Error(`데이터를 불러오지 못했습니다. HTTP ${response.status}`);
@@ -366,6 +371,7 @@
     policies = payload.policies.map(normalize);
     $("[data-total-count]").textContent = policies.length.toLocaleString("ko-KR");
     $("[data-updated-at]").textContent = payload.updatedAt ? `업데이트 ${payload.updatedAt}` : "정적 데이터";
+    if (state.keyword) $("[data-search]").value = state.keyword;
     if (restored) $("[data-save-feedback]").textContent = "저장된 조건을 불러왔습니다.";
     render();
   }
