@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 const outPath = path.join(rootDir, "data", "policies.json");
+const manualPath = path.join(rootDir, "data", "manual-policies.json");
 const baseUrl = "https://www.youthcenter.go.kr";
 const sourceUrl = `${baseUrl}/youthPolicy/ythPlcyTotalSearch`;
 
@@ -185,6 +186,19 @@ function totalCount(payload, fallback) {
   return fallback;
 }
 
+function loadManualPolicies() {
+  if (!fs.existsSync(manualPath)) return [];
+  const payload = JSON.parse(fs.readFileSync(manualPath, "utf8"));
+  return Array.isArray(payload) ? payload : payload.policies || [];
+}
+
+function mergeManualPolicies(policies) {
+  const seen = new Set(policies.map((item) => String(item.id)));
+  const manualPolicies = loadManualPolicies().filter((item) => item?.id && item?.title);
+  const missingManualPolicies = manualPolicies.filter((item) => !seen.has(String(item.id)));
+  return [...missingManualPolicies, ...policies];
+}
+
 async function getSession() {
   const response = await fetch(sourceUrl, { headers: { "user-agent": "Mozilla/5.0" } });
   if (!response.ok) throw new Error(`Failed to open source page: HTTP ${response.status}`);
@@ -289,14 +303,15 @@ async function main() {
     seen.add(item.id);
     return true;
   });
+  const mergedPolicies = mergeManualPolicies(policies);
   const output = {
     updatedAt: new Date().toISOString().slice(0, 10),
     sourceName: "온통청년 청년정책 통합검색",
     sourceUrl,
-    policies
+    policies: mergedPolicies
   };
   fs.writeFileSync(outPath, `${JSON.stringify(output, null, 2)}\n`, "utf8");
-  console.log(`Fetched ${policies.length} policies from ${sourceName(output)}.`);
+  console.log(`Fetched ${policies.length} policies and merged ${mergedPolicies.length - policies.length} manual policies from ${sourceName(output)}.`);
 }
 
 function sourceName(output) {

@@ -281,6 +281,21 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://youthzip.pages.dev/policy/manual-kpass/</loc>
+    <lastmod>2026-06-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/policy/manual-the-gyeonggi-pass/</loc>
+    <lastmod>2026-06-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/policy/manual-incheon-i-pass/</loc>
+    <lastmod>2026-06-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://youthzip.pages.dev/policy/20260626005400213246/</loc>
     <lastmod>2026-06-30</lastmod>
     <priority>0.6</priority>
