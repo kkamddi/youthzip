@@ -1192,6 +1192,8 @@ h1 {
   }
 
   .quick-links {
+    flex: 0 0 auto;
+    align-items: center;
     flex-wrap: nowrap;
     overflow-x: auto;
     padding-bottom: 2px;
@@ -1210,6 +1212,10 @@ h1 {
   .tool-button,
   .quick-link {
     flex: 0 0 auto;
+  }
+
+  .quick-link {
+    min-height: 36px;
   }
 
   .pills::-webkit-scrollbar {
