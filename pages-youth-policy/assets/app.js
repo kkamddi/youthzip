@@ -155,6 +155,10 @@
     return text.length > 95 ? `${text.slice(0, 95)}...` : text;
   }
 
+  function displayPeriod(item) {
+    return String(item?.period || "").trim() || "공식 공고 확인";
+  }
+
   function compactCard(item, badge) {
     const detail = `/policy/${encodeURIComponent(item.id)}/`;
     const official = item.officialUrl || "#";
@@ -269,7 +273,7 @@
         <h3>${escapeHtml(item.title)}</h3>
         <p class="summary">${escapeHtml(teaser(item.summary || item.support))}</p>
         <dl class="meta brief">
-          <div><dt>기간</dt><dd>${escapeHtml(item.period)}</dd></div>
+          <div><dt>기간</dt><dd>${escapeHtml(displayPeriod(item))}</dd></div>
         </dl>
         <div class="card-actions">
           <button class="link-button favorite-button" type="button" data-favorite-button data-policy-id="${escapeHtml(item.id)}" aria-pressed="false">♡ 찜</button>

@@ -333,6 +333,10 @@ function teaser(value) {
   return text.length > 95 ? `${text.slice(0, 95)}...` : text;
 }
 
+function displayPeriod(item) {
+  return String(item?.period || "").trim() || "공식 공고 확인";
+}
+
 function policySeoTitle(item) {
   const title = String(item.title || "청년지원사업");
   if ((policyTitleCounts.get(title) || 0) <= 1) return title;
@@ -473,7 +477,7 @@ ${pageScripts}
 function metaRows(item) {
   return [
     ["지원내용", item.support],
-    ["신청기간", item.period],
+    ["신청기간", displayPeriod(item)],
     ["대상연령", item.age],
     ["소득/조건", item.income],
     ["지역/거주", item.residence],
@@ -499,7 +503,7 @@ function policyCard(item) {
           <h3><a href="/policy/${encodeURIComponent(item.id)}/">${esc(item.title)}</a></h3>
           <p class="summary">${esc(teaser(item.summary || item.support))}</p>
           <dl class="meta brief">
-            <div><dt>기간</dt><dd>${esc(item.period)}</dd></div>
+            <div><dt>기간</dt><dd>${esc(displayPeriod(item))}</dd></div>
           </dl>
           <div class="card-actions">
             <a class="link-button" href="/policy/${encodeURIComponent(item.id)}/">상세보기</a>
@@ -536,7 +540,7 @@ function makeDetail(item) {
   const official = safeUrl(item.officialUrl);
   const related = relatedPolicies(item);
   const detailPath = `/policy/${encodeURIComponent(item.id)}/`;
-  const description = trimMeta(`${item.regionGroup || item.region || "전국"} ${item.type || "청년"} 정책(${item.id}): ${item.title}. 신청기간 ${item.period || "공식 공고 확인"}, 지원내용, 대상 조건과 공식 링크를 확인하세요.`);
+  const description = trimMeta(`${item.regionGroup || item.region || "전국"} ${item.type || "청년"} 정책(${item.id}): ${item.title}. 신청기간 ${displayPeriod(item)}, 지원내용, 대상 조건과 공식 링크를 확인하세요.`);
   const body = `    <article class="detail-page">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <div class="labels">
