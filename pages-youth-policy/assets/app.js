@@ -146,6 +146,44 @@
       !state.quickMode;
   }
 
+  function filterSummary() {
+    return `${state.region} · ${state.type} · ${state.status}`;
+  }
+
+  function openFilterSheet() {
+    const sheet = $("[data-filter-sheet]");
+    const backdrop = $("[data-filter-close].filter-backdrop");
+    if (!sheet || !backdrop) return;
+    sheet.classList.add("is-open");
+    sheet.setAttribute("aria-hidden", "false");
+    backdrop.hidden = false;
+    document.body.classList.add("filter-sheet-open");
+  }
+
+  function usesMobileFilterSheet() {
+    return window.matchMedia("(max-width: 640px)").matches;
+  }
+
+  function closeFilterSheet() {
+    const sheet = $("[data-filter-sheet]");
+    const backdrop = $("[data-filter-close].filter-backdrop");
+    if (!sheet || !backdrop) return;
+    sheet.classList.remove("is-open");
+    sheet.setAttribute("aria-hidden", usesMobileFilterSheet() ? "true" : "false");
+    backdrop.hidden = true;
+    document.body.classList.remove("filter-sheet-open");
+  }
+
+  function applyPreset(group, value) {
+    const allowed = { region: REGIONS, type: TYPES, status: STATUSES }[group];
+    if (!allowed?.includes(value)) return;
+    state[group] = value;
+    state.quickMode = "";
+    state.favoritesOnly = false;
+    resetVisibleLimit();
+    render();
+  }
+
   function pill(value, active) {
     return `<button class="pill${active ? " is-active" : ""}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`;
   }
@@ -291,6 +329,8 @@
     const visibleItems = shouldLimit ? items.slice(0, state.visibleLimit) : items;
     $("[data-result-count]").textContent = items.length.toLocaleString("ko-KR");
     $("[data-summary-text]").textContent = `${state.region} · ${state.type} · ${state.status}`;
+    const mobileSummary = $("[data-mobile-filter-summary]");
+    if (mobileSummary) mobileSummary.textContent = filterSummary();
     $("[data-sort]").value = state.sort;
     const favorites = favoriteIds();
     const favoriteToggle = $("[data-favorites-only]");
@@ -316,6 +356,14 @@
 
   function bindEvents() {
     document.addEventListener("click", (event) => {
+      const preset = event.target.closest("[data-filter-preset-region], [data-filter-preset-type], [data-filter-preset-status]");
+      if (preset) {
+        if (preset.dataset.filterPresetRegion) applyPreset("region", preset.dataset.filterPresetRegion);
+        if (preset.dataset.filterPresetType) applyPreset("type", preset.dataset.filterPresetType);
+        if (preset.dataset.filterPresetStatus) applyPreset("status", preset.dataset.filterPresetStatus);
+        return;
+      }
+
       const button = event.target.closest(".pill");
       if (button) {
         const group = button.closest("[data-filter]")?.dataset.filter;
@@ -327,6 +375,16 @@
         }
       }
     });
+
+    $("[data-filter-open]")?.addEventListener("click", openFilterSheet);
+    document.querySelectorAll("[data-filter-close]").forEach((button) => {
+      button.addEventListener("click", closeFilterSheet);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeFilterSheet();
+    });
+    window.addEventListener("resize", closeFilterSheet);
+    closeFilterSheet();
 
     $("[data-reset]").addEventListener("click", () => {
       state.region = "전체";

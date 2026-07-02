@@ -61,19 +61,42 @@
         <button class="reset-button" type="button" data-reset>전체 보기</button>
       </div>
 
-      <div class="filter-row" data-filter="region">
-        <strong>지역</strong>
-        <div class="pills" data-region-pills></div>
+      <div class="mobile-filter-controls" aria-label="모바일 필터">
+        <button class="tool-button mobile-filter-button" type="button" data-filter-open>필터 열기</button>
+        <p data-mobile-filter-summary>전체 · 전체 · 전체</p>
+        <div class="popular-filters" aria-label="빠른 필터">
+          <button class="quick-link" type="button" data-filter-preset-region="서울">서울</button>
+          <button class="quick-link" type="button" data-filter-preset-region="경기">경기</button>
+          <button class="quick-link" type="button" data-filter-preset-type="취업">취업</button>
+          <button class="quick-link" type="button" data-filter-preset-type="주거">주거</button>
+          <button class="quick-link" type="button" data-filter-preset-status="신청중">신청중</button>
+          <button class="quick-link" type="button" data-filter-preset-status="마감임박">마감임박</button>
+        </div>
       </div>
 
-      <div class="filter-row" data-filter="type">
-        <strong>유형</strong>
-        <div class="pills" data-type-pills></div>
-      </div>
+      <div class="filter-backdrop" data-filter-close hidden></div>
+      <div class="filter-sheet" data-filter-sheet aria-hidden="true">
+        <div class="filter-sheet-head">
+          <strong>필터</strong>
+          <button class="sheet-close" type="button" data-filter-close aria-label="필터 닫기">×</button>
+        </div>
 
-      <div class="filter-row" data-filter="status">
-        <strong>상태</strong>
-        <div class="pills" data-status-pills></div>
+        <div class="filter-row" data-filter="region">
+          <strong>지역</strong>
+          <div class="pills" data-region-pills></div>
+        </div>
+
+        <div class="filter-row" data-filter="type">
+          <strong>유형</strong>
+          <div class="pills" data-type-pills></div>
+        </div>
+
+        <div class="filter-row" data-filter="status">
+          <strong>상태</strong>
+          <div class="pills" data-status-pills></div>
+        </div>
+
+        <button class="tool-button sheet-apply" type="button" data-filter-close>적용하기</button>
       </div>
 
       <label class="search-wrap">

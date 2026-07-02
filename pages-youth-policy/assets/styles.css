@@ -224,6 +224,16 @@ h1 {
   margin-top: 18px;
 }
 
+.mobile-filter-controls,
+.filter-sheet-head,
+.sheet-apply {
+  display: none;
+}
+
+.filter-backdrop[hidden] {
+  display: none;
+}
+
 .filter-row strong {
   padding-top: 8px;
   font-size: 13px;
@@ -1153,6 +1163,106 @@ h1 {
     padding: 18px;
   }
 
+  .mobile-filter-controls {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .mobile-filter-controls p {
+    margin: 0;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .mobile-filter-button {
+    width: 100%;
+    min-height: 42px;
+    background: var(--green-dark);
+    color: #fff;
+  }
+
+  .popular-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .popular-filters .quick-link {
+    min-height: 32px;
+    padding: 0 10px;
+    border-color: var(--line);
+    background: #eef5e8;
+  }
+
+  .filter-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(23, 33, 18, 0.34);
+  }
+
+  .filter-sheet {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 41;
+    display: grid;
+    max-height: min(82vh, 620px);
+    padding: 18px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    box-shadow: 0 -18px 38px rgba(23, 33, 18, 0.18);
+    overflow-y: auto;
+    transform: translateY(108%);
+    transition: transform 180ms ease;
+  }
+
+  .filter-sheet.is-open {
+    transform: translateY(0);
+  }
+
+  .filter-sheet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  .sheet-close {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 22px;
+    font-weight: 900;
+  }
+
+  .sheet-apply {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 16px;
+    background: var(--green-dark);
+    color: #fff;
+  }
+
+  body.filter-sheet-open {
+    overflow: hidden;
+  }
+
   .spotlight-block,
   .source-note {
     padding: 18px;
@@ -1178,6 +1288,10 @@ h1 {
     gap: 8px;
   }
 
+  .filter-sheet .filter-row {
+    margin-top: 16px;
+  }
+
   .pills {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -1200,6 +1314,16 @@ h1 {
     overflow-x: auto;
     padding-bottom: 2px;
     scrollbar-width: none;
+  }
+
+  .filter-sheet .pills {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+
+  .filter-sheet .pill {
+    flex: 0 0 auto;
   }
 
   .result-tools::-webkit-scrollbar {
