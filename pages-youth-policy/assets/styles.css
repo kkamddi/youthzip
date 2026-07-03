@@ -46,11 +46,27 @@ a {
 }
 
 .brand {
-  display: grid;
+  display: flex;
+  align-items: center;
   flex: 0 0 auto;
-  gap: 2px;
+  gap: 10px;
   min-width: 0;
   text-decoration: none;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(31, 95, 38, 0.12);
+}
+
+.brand-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
 }
 
 .brand strong {
@@ -1125,6 +1141,12 @@ h1 {
 
   .brand strong {
     font-size: 20px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
   }
 
   .brand span {

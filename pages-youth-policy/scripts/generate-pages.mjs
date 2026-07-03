@@ -531,8 +531,11 @@ ${schemaTags}
 <body>
   <header class="site-header">
     <a class="brand" href="/" aria-label="청년혜택.zip 홈">
-      <strong>청년혜택.zip</strong>
-      <span>청년지원사업 찾기</span>
+      <img class="brand-mark" src="/assets/youthzip-profile.png" alt="" width="42" height="42" aria-hidden="true">
+      <span class="brand-copy">
+        <strong>청년혜택.zip</strong>
+        <span>청년지원사업 찾기</span>
+      </span>
     </a>
     <nav class="top-nav" aria-label="주요 메뉴">
       <a href="/calendar/">마감 캘린더</a>
