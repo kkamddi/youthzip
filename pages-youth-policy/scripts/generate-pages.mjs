@@ -15,6 +15,7 @@ const policyTitleCounts = policies.reduce((counts, item) => {
 const collator = new Intl.Collator("ko-KR");
 const siteUrl = "https://youthzip.pages.dev";
 const siteName = "청년혜택.zip";
+const blogUrl = "https://youthpick.tistory.com";
 const defaultOgImage = `${siteUrl}/assets/og-image.svg`;
 
 const regions = [
@@ -491,7 +492,8 @@ function organizationSchema() {
     "@type": "Organization",
     name: siteName,
     url: siteUrl,
-    logo: `${siteUrl}/assets/favicon.png`
+    logo: `${siteUrl}/assets/favicon.png`,
+    sameAs: [blogUrl]
   };
 }
 
@@ -504,6 +506,7 @@ function footer() {
       <a href="/notice/">면책·공지</a>
       <a href="/privacy/">개인정보처리방침</a>
       <a href="/contact/">연락처</a>
+      <a href="${blogUrl}/" target="_blank" rel="noopener">블로그</a>
     </nav>
     <p>본 사이트는 광고·제휴 수익으로 운영될 수 있습니다. 게시 정보는 공식 공고 기준이며 변동될 수 있습니다. © 2026 청년혜택.zip</p>
   </footer>`;
