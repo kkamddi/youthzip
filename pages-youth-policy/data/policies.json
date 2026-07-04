@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-03",
+  "updatedAt": "2026-07-04",
   "sourceName": "온통청년 청년정책 통합검색",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "policies": [
@@ -390,7 +390,7 @@
       "regionGroup": "서울",
       "city": "서울",
       "type": "금융",
-      "status": "마감임박",
+      "status": "마감",
       "support": "청년들의 기초자산 형성을 지원하기 위한 정책형 금융상품으로, 3년 만기 시까지 매월 최대 50만원 한도 내에서 자유롭게 납입 가능(2026년 6월 22일 출시)",
       "period": "2026-06-22 ~ 2026-07-03",
       "startDate": "2026-06-22",
@@ -5140,7 +5140,7 @@
       "regionGroup": "충남",
       "city": "충남",
       "type": "주거",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "대학생 행복기숙사 지원",
       "period": "2026-07-01 ~ 2026-07-11",
       "startDate": "2026-07-01",
