@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://youthzip.pages.dev/sitemap.xml
+Sitemap: https://youthzip.pages.dev/sitemap-static.xml

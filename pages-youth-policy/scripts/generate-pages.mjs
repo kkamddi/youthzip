@@ -1054,7 +1054,7 @@ function sitemapEntry(url, priority = "0.7") {
 }
 
 function writeSitemap() {
-  const urls = [
+  const coreUrls = [
     sitemapEntry("/", "1.0"),
     sitemapEntry("/region/", "0.8"),
     sitemapEntry("/type/", "0.8"),
@@ -1065,7 +1065,10 @@ function writeSitemap() {
     ...types.map(([slug]) => sitemapEntry(`/type/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...statuses.map(([slug]) => sitemapEntry(`/status/${slug}/`, slug === "all" ? "0.8" : "0.7")),
     ...guides.map((guide) => sitemapEntry(`/guides/${guide.slug}/`, "0.75")),
-    ...staticPages.map((page) => sitemapEntry(`/${page.slug}/`, "0.5")),
+    ...staticPages.map((page) => sitemapEntry(`/${page.slug}/`, "0.5"))
+  ];
+  const urls = [
+    ...coreUrls,
     ...policies.map((item) => sitemapEntry(`/policy/${encodeURIComponent(item.id)}/`, "0.6"))
   ];
   writePage("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
@@ -1073,10 +1076,49 @@ function writeSitemap() {
 ${urls.join("\n")}
 </urlset>
 `);
+  writePage("sitemap-static.xml", `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${coreUrls.join("\n")}
+</urlset>
+`);
+  writePage("sitemap.txt", `${[
+    `${siteUrl}/`,
+    `${siteUrl}/region/`,
+    `${siteUrl}/type/`,
+    `${siteUrl}/status/`,
+    `${siteUrl}/guides/`,
+    `${siteUrl}/calendar/`,
+    ...regions.map(([slug]) => `${siteUrl}/region/${slug}/`),
+    ...types.map(([slug]) => `${siteUrl}/type/${slug}/`),
+    ...statuses.map(([slug]) => `${siteUrl}/status/${slug}/`),
+    ...guides.map((guide) => `${siteUrl}/guides/${guide.slug}/`),
+    ...staticPages.map((page) => `${siteUrl}/${page.slug}/`)
+  ].join("\n")}
+`);
   writePage("robots.txt", `User-agent: *
 Allow: /
 
 Sitemap: ${siteUrl}/sitemap.xml
+Sitemap: ${siteUrl}/sitemap-static.xml
+`);
+  writePage("_headers", `/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+
+/sitemap-static.xml
+  Content-Type: application/xml; charset=utf-8
+
+/sitemap.txt
+  Content-Type: text/plain; charset=utf-8
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+
+/data/*
+  Cache-Control: public, max-age=1800
 `);
 }
 
