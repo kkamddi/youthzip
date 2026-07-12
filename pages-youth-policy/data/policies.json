@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-11",
+  "updatedAt": "2026-07-12",
   "sourceName": "온통청년 청년정책 통합검색",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "policies": [
@@ -5349,7 +5349,7 @@
       "regionGroup": "충남",
       "city": "충남",
       "type": "주거",
-      "status": "마감임박",
+      "status": "마감",
       "support": "대학생 행복기숙사 지원",
       "period": "2026-07-01 ~ 2026-07-11",
       "startDate": "2026-07-01",
@@ -8028,7 +8028,7 @@
       "regionGroup": "제주",
       "city": "제주",
       "type": "문화",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "도내·외 청년들에게 진로 컨설팅 및 진로 탐색과제 수행으로 주체적 미래 설계 기회 제공과 제주 정주 여건 탐색 기회 제공",
       "period": "2026-07-06 ~ 2026-07-19",
       "startDate": "2026-07-06",
