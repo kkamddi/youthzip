@@ -4,7 +4,6 @@ https://youthzip.pages.dev/type/
 https://youthzip.pages.dev/status/
 https://youthzip.pages.dev/guides/
 https://youthzip.pages.dev/calendar/
-https://youthzip.pages.dev/region/all/
 https://youthzip.pages.dev/region/national/
 https://youthzip.pages.dev/region/seoul/
 https://youthzip.pages.dev/region/busan/
@@ -23,7 +22,6 @@ https://youthzip.pages.dev/region/jeonnam/
 https://youthzip.pages.dev/region/gyeongbuk/
 https://youthzip.pages.dev/region/gyeongnam/
 https://youthzip.pages.dev/region/jeju/
-https://youthzip.pages.dev/type/all/
 https://youthzip.pages.dev/type/housing/
 https://youthzip.pages.dev/type/job/
 https://youthzip.pages.dev/type/finance/
@@ -32,11 +30,9 @@ https://youthzip.pages.dev/type/transport/
 https://youthzip.pages.dev/type/culture/
 https://youthzip.pages.dev/type/welfare/
 https://youthzip.pages.dev/type/startup/
-https://youthzip.pages.dev/status/all/
 https://youthzip.pages.dev/status/open/
 https://youthzip.pages.dev/status/closing-soon/
 https://youthzip.pages.dev/status/scheduled/
-https://youthzip.pages.dev/status/closed/
 https://youthzip.pages.dev/guides/2026-youth-monthly-rent-support/
 https://youthzip.pages.dev/guides/2026-youth-jeonse-support/
 https://youthzip.pages.dev/guides/2026-youth-savings-account/
