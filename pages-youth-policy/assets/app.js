@@ -459,11 +459,29 @@
 
   async function boot() {
     const restored = loadFilters();
-    const queryKeyword = new URLSearchParams(window.location.search).get("q");
+    const params = new URLSearchParams(window.location.search);
+    const queryKeyword = params.get("q");
+    const queryRegion = params.get("region");
+    const queryType = params.get("type");
+    const queryStatus = params.get("status");
+    let queryApplied = false;
     if (queryKeyword) {
       state.keyword = queryKeyword.trim();
-      state.quickMode = "";
+      queryApplied = true;
     }
+    if (REGIONS.includes(queryRegion)) {
+      state.region = queryRegion;
+      queryApplied = true;
+    }
+    if (TYPES.includes(queryType)) {
+      state.type = queryType;
+      queryApplied = true;
+    }
+    if (STATUSES.includes(queryStatus)) {
+      state.status = queryStatus;
+      queryApplied = true;
+    }
+    if (queryApplied) state.quickMode = "";
     bindEvents();
     const response = await fetch(DATA_URL, { cache: "no-store" });
     if (!response.ok) throw new Error(`데이터를 불러오지 못했습니다. HTTP ${response.status}`);
@@ -472,13 +490,19 @@
     $("[data-total-count]").textContent = policies.length.toLocaleString("ko-KR");
     $("[data-updated-at]").textContent = payload.updatedAt ? `업데이트 ${payload.updatedAt}` : "정적 데이터";
     if (state.keyword) $("[data-search]").value = state.keyword;
-    if (restored) $("[data-save-feedback]").textContent = "저장된 조건을 불러왔습니다.";
+    if (restored && !queryApplied) $("[data-save-feedback]").textContent = "저장된 조건을 불러왔습니다.";
     render();
   }
 
   boot().catch((error) => {
-    $("[data-policy-list]").innerHTML = "";
-    $("[data-empty]").hidden = false;
-    $("[data-empty]").textContent = error.message;
+    const list = $("[data-policy-list]");
+    if (!list?.children.length) {
+      list.innerHTML = "";
+      $("[data-empty]").hidden = false;
+      $("[data-empty]").textContent = error.message;
+      return;
+    }
+    $("[data-empty]").hidden = true;
+    $("[data-save-feedback]").textContent = "최신 데이터 연결이 지연되어 미리 준비된 정책을 표시합니다.";
   });
 })();

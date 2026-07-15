@@ -7,6 +7,8 @@ const rootDir = path.resolve(__dirname, "..");
 const dataPath = path.join(rootDir, "data", "policies.json");
 const payload = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 const policies = payload.policies || [];
+const indexablePolicies = policies.filter((item) => item.status !== "마감");
+const contentDate = payload.updatedAt || new Date().toISOString().slice(0, 10);
 const policyTitleCounts = policies.reduce((counts, item) => {
   const title = String(item.title || "청년지원사업");
   counts.set(title, (counts.get(title) || 0) + 1);
@@ -68,6 +70,7 @@ const staticPages = [
     description: "청년혜택.zip은 청년지원사업을 조건별로 빠르게 찾을 수 있도록 정리한 안내 사이트입니다.",
     body: [
       "청년혜택.zip은 지역, 지원 유형, 신청 상태를 기준으로 청년지원사업을 한눈에 살펴볼 수 있도록 만든 정보 안내 사이트입니다.",
+      "온통청년 정책 데이터와 각 운영기관의 공식 공고를 바탕으로 자동 수집한 뒤, 검색과 비교에 필요한 항목을 청년혜택.zip 편집팀이 정리합니다. 데이터는 매일 두 차례 갱신하는 것을 원칙으로 합니다.",
       "각 정책의 신청 여부와 세부 자격은 운영기관의 공식 공고가 최종 기준입니다."
     ]
   },
@@ -77,14 +80,16 @@ const staticPages = [
     description: "청년혜택.zip의 정책 정보 정리 기준과 편집 원칙입니다.",
     body: [
       "정책명, 지역, 분야, 신청기간, 지원내용, 대상 조건은 공식 정책 데이터와 공고 내용을 기준으로 정리합니다.",
-      "정보 전달을 위해 긴 문장은 요약할 수 있으며, 신청 전에는 반드시 공식 링크에서 최신 공고와 제출 서류를 확인해야 합니다."
+      "자동 수집 과정에서 지역·유형·신청 상태를 표준화하고, 마감일이 지난 정책은 검색 결과에서 제외합니다. 주요 가이드는 편집팀이 검색 의도에 맞춰 직접 구성하고 자료 기준일을 표시합니다.",
+      "정보 전달을 위해 긴 문장은 요약할 수 있으며, 신청 전에는 반드시 공식 링크에서 최신 공고와 제출 서류를 확인해야 합니다. 오류 제보는 청년혜택.zip 블로그의 방명록이나 댓글로 접수합니다."
     ]
   },
   {
     slug: "sources",
-    title: "이미지 출처",
+    title: "자료·이미지 출처",
     description: "청년혜택.zip에서 사용하는 이미지와 자료 출처 안내입니다.",
     body: [
+      "정책 정보는 온통청년 정책 데이터와 각 운영기관의 공식 공고를 출처로 사용하며, 모든 정책 상세 페이지에서 해당 공식 링크를 제공합니다.",
       "현재 정책 목록과 상세 페이지는 별도 정책 이미지를 사용하지 않고 텍스트 정보 중심으로 구성합니다.",
       "향후 이미지가 추가되는 경우 공공누리, 공식 보도자료, 직접 제작 이미지 등 사용 가능한 자료를 기준으로 출처를 함께 표기합니다."
     ]
@@ -104,6 +109,7 @@ const staticPages = [
     description: "청년혜택.zip의 개인정보 처리 안내입니다.",
     body: [
       "청년혜택.zip은 현재 회원가입, 댓글, 직접 신청 기능을 제공하지 않으며 이용자의 주민등록번호, 연락처, 계좌번호 등 민감한 개인정보를 직접 수집하지 않습니다.",
+      "서비스 품질과 이용 현황 확인을 위해 Cloudflare Web Analytics와 같은 비식별 통계 도구를 사용할 수 있습니다. 향후 광고 서비스가 도입되면 쿠키 사용과 광고 사업자 관련 내용을 이 방침에 고지합니다.",
       "외부 공식 신청 사이트로 이동한 뒤 입력하는 개인정보는 해당 기관의 개인정보처리방침을 따릅니다."
     ]
   },
@@ -112,7 +118,7 @@ const staticPages = [
     title: "연락처",
     description: "청년혜택.zip 문의와 제보 안내입니다.",
     body: [
-      "정책 정보 오류, 링크 오류, 제휴 문의가 있는 경우 운영자가 확인할 수 있는 연락 채널을 준비해 반영할 예정입니다.",
+      "정책 정보 오류, 링크 오류, 제휴 문의는 청년혜택.zip 블로그(youthpick.tistory.com)의 방명록 또는 관련 글 댓글로 남겨 주세요.",
       "정확한 신청 상담은 각 정책 상세 페이지의 공식 링크 또는 담당 기관 연락처를 이용해 주세요."
     ]
   }
@@ -431,13 +437,13 @@ function absoluteUrl(urlPath = "/") {
   return `${siteUrl}${urlPathText.startsWith("/") ? urlPathText : `/${urlPathText}`}`;
 }
 
-function seoHead({ title, description, path: pagePath = "/", type = "website" }) {
+function seoHead({ title, description, path: pagePath = "/", type = "website", robots = "index, follow" }) {
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   const metaDescription = trimMeta(description);
   const canonicalUrl = absoluteUrl(pagePath);
   return `  <title>${esc(fullTitle)}</title>
   <meta name="description" content="${esc(metaDescription)}">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="${esc(robots)}">
   <link rel="canonical" href="${esc(canonicalUrl)}">
   <meta property="og:site_name" content="${esc(siteName)}">
   <meta property="og:locale" content="ko_KR">
@@ -502,7 +508,7 @@ function footer() {
     <nav class="footer-links" aria-label="사이트 안내">
       <a href="/about/">소개</a>
       <a href="/editorial-policy/">편집 방침</a>
-      <a href="/sources/">이미지 출처</a>
+      <a href="/sources/">자료·이미지 출처</a>
       <a href="/notice/">면책·공지</a>
       <a href="/privacy/">개인정보처리방침</a>
       <a href="/contact/">연락처</a>
@@ -512,7 +518,7 @@ function footer() {
   </footer>`;
 }
 
-function pageShell({ title, description, body, path: pagePath = "/", type = "website", schema = [] }) {
+function pageShell({ title, description, body, path: pagePath = "/", type = "website", robots = "index, follow", schema = [] }) {
   const schemas = [organizationSchema(), ...schema];
   const schemaTags = schemas.length ? `\n${schemas.map(jsonLd).join("\n")}` : "";
   const pageScripts = [
@@ -524,7 +530,7 @@ function pageShell({ title, description, body, path: pagePath = "/", type = "web
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-${seoHead({ title, description, path: pagePath, type })}
+${seoHead({ title, description, path: pagePath, type, robots })}
 ${schemaTags}
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon.png">
@@ -586,11 +592,56 @@ function policyCard(item) {
           <dl class="meta brief">
             <div><dt>기간</dt><dd>${esc(displayPeriod(item))}</dd></div>
           </dl>
-          <div class="card-actions">
+          <div class="card-actions static-card-actions">
             <a class="link-button" href="/policy/${encodeURIComponent(item.id)}/">상세보기</a>
             ${official ? `<a class="link-button primary" href="${esc(official)}" target="_blank" rel="noopener noreferrer">공식 링크</a>` : ""}
           </div>
         </article>`;
+}
+
+function contentMeta() {
+  return `      <div class="content-meta" aria-label="콘텐츠 작성 및 검수 정보">
+        <span>정리: 청년혜택.zip 편집팀</span>
+        <span>자료 기준일: <time datetime="${esc(contentDate)}">${esc(contentDate)}</time></span>
+        <a href="/editorial-policy/">정보 검수 방식</a>
+      </div>`;
+}
+
+function homePolicyRank(item) {
+  return { "마감임박": 0, "신청중": 1, "예정": 2 }[item.status] ?? 3;
+}
+
+function homePolicies() {
+  return [...indexablePolicies]
+    .sort((a, b) => homePolicyRank(a) - homePolicyRank(b) ||
+      String(a.endDate || "9999-12-31").localeCompare(String(b.endDate || "9999-12-31")) ||
+      collator.compare(a.title || "", b.title || ""))
+    .slice(0, 30);
+}
+
+function syncHomeIndex() {
+  const homePath = path.join(rootDir, "index.html");
+  const cardStart = "<!-- HOME_POLICY_STATIC_START -->";
+  const cardEnd = "<!-- HOME_POLICY_STATIC_END -->";
+  const schemaStart = "<!-- HOME_ITEMLIST_SCHEMA_START -->";
+  const schemaEnd = "<!-- HOME_ITEMLIST_SCHEMA_END -->";
+  const featured = homePolicies();
+  let html = fs.readFileSync(homePath, "utf8");
+
+  for (const marker of [cardStart, cardEnd, schemaStart, schemaEnd]) {
+    if (!html.includes(marker)) throw new Error(`Missing home generation marker: ${marker}`);
+  }
+
+  const cards = featured.map(policyCard).join("");
+  const schema = jsonLd(itemListSchema(
+    "현재 확인할 청년지원사업",
+    "신청중, 마감임박, 신청예정 청년지원사업 중 먼저 확인할 정책 목록입니다.",
+    featured,
+    (item) => `/policy/${encodeURIComponent(item.id)}/`
+  ));
+  html = html.replace(new RegExp(`${cardStart}[\\s\\S]*?${cardEnd}`), () => `${cardStart}\n${cards}\n      ${cardEnd}`);
+  html = html.replace(new RegExp(`${schemaStart}[\\s\\S]*?${schemaEnd}`), () => `${schemaStart}\n${schema}\n  ${schemaEnd}`);
+  fs.writeFileSync(homePath, html, "utf8");
 }
 
 function sortPolicies(items) {
@@ -631,6 +682,7 @@ function makeDetail(item) {
       </div>
       <h1 class="page-title">${esc(item.title)}</h1>
       <p class="detail-summary">${esc(item.summary || item.support)}</p>
+${contentMeta()}
 
       <section class="detail-section">
         <h2>핵심 정보</h2>
@@ -655,7 +707,7 @@ function makeDetail(item) {
         <a class="link-button" href="/type/${typeSlug(item)}/">${esc(item.type)} 정책 더보기</a>
       </div>
 
-      <p class="source-footnote">공식 공고 기준으로 정리한 정보입니다. 실제 신청은 반드시 공식 링크에서 최종 확인 후 진행하세요.</p>
+      <p class="source-footnote">온통청년 정책 데이터와 공식 공고를 기준으로 정리했습니다. 실제 신청은 반드시 공식 링크에서 최종 확인하고, 정리 방식은 <a href="/editorial-policy/">편집 방침</a>에서 확인하세요.</p>
     </article>`;
 
   writePage(`policy/${encodeURIComponent(item.id)}/index.html`, pageShell({
@@ -664,6 +716,7 @@ function makeDetail(item) {
     body,
     path: detailPath,
     type: "article",
+    robots: item.status === "마감" ? "noindex, follow" : "index, follow",
     schema: [
       breadcrumbSchema([
         { name: "홈", path: "/" },
@@ -676,7 +729,13 @@ function makeDetail(item) {
         headline: policySeoTitle(item),
         description,
         url: absoluteUrl(detailPath),
-        dateModified: payload.updatedAt || new Date().toISOString().slice(0, 10),
+        dateModified: contentDate,
+        author: {
+          "@type": "Organization",
+          name: `${siteName} 편집팀`,
+          url: absoluteUrl("/about/")
+        },
+        isBasedOn: official || undefined,
         publisher: {
           "@type": "Organization",
           name: siteName,
@@ -695,11 +754,6 @@ function makeDetail(item) {
         audience: {
           "@type": "Audience",
           audienceType: "청년"
-        },
-        provider: {
-          "@type": "Organization",
-          name: siteName,
-          url: siteUrl
         },
         sameAs: official || undefined
       },
@@ -745,9 +799,9 @@ function optionIndex(kind, heading, description, options) {
 }
 
 function countFor(kind, label) {
-  if (label === "전체") return policies.length;
-  if (kind === "region") return filterRegion(policies, label).length;
-  if (kind === "type") return policies.filter((item) => item.type === label).length;
+  if (label === "전체") return indexablePolicies.length;
+  if (kind === "region") return filterRegion(indexablePolicies, label).length;
+  if (kind === "type") return indexablePolicies.filter((item) => item.type === label).length;
   if (kind === "status") return policies.filter((item) => item.status === label).length;
   return 0;
 }
@@ -771,6 +825,10 @@ function filterRegion(items, label) {
 
 function listPage(kind, slug, label, items) {
   const sorted = sortPolicies(items);
+  const visible = sorted.slice(0, 60);
+  const omitted = sorted.length - visible.length;
+  const queryKey = { region: "region", type: "type", status: "status" }[kind];
+  const filterHref = label === "전체" ? "/" : `/?${queryKey}=${encodeURIComponent(label)}`;
   const kindLabels = { region: "지역별", type: "유형별", status: "상태별" };
   const pageTitle = label === "전체" ? `${kindLabels[kind]} 전체 청년지원사업` : `${label} 청년지원사업`;
   const pageDescription = label === "전체"
@@ -781,13 +839,15 @@ function listPage(kind, slug, label, items) {
       <p class="eyebrow">${kind}</p>
       <h1 class="page-title">${esc(pageTitle)}</h1>
       <p class="detail-summary">${sorted.length.toLocaleString("ko-KR")}개 정책을 한눈에 확인할 수 있게 묶었습니다.</p>
-      <div class="card-grid list-grid">${sorted.map(policyCard).join("")}</div>
+      <div class="card-grid list-grid">${visible.map(policyCard).join("")}</div>
+      ${omitted > 0 ? `<div class="list-more-note"><p>페이지 속도를 위해 우선 ${visible.length.toLocaleString("ko-KR")}개를 표시합니다.</p><a class="link-button primary" href="${filterHref}">메인 필터에서 ${sorted.length.toLocaleString("ko-KR")}개 모두 보기</a></div>` : ""}
     </section>`;
   writePage(`${kind}/${slug}/index.html`, pageShell({
     title: pageTitle,
     description: pageDescription,
     body,
     path: `/${kind}/${slug}/`,
+    robots: slug !== "all" && !(kind === "status" && slug === "closed") ? "index, follow" : "noindex, follow",
     schema: [
       breadcrumbSchema([
         { name: "홈", path: "/" },
@@ -797,7 +857,7 @@ function listPage(kind, slug, label, items) {
       itemListSchema(
         pageTitle,
         pageDescription,
-        sorted,
+        visible,
         (item) => `/policy/${encodeURIComponent(item.id)}/`
       )
     ]
@@ -807,6 +867,9 @@ function listPage(kind, slug, label, items) {
 function writeStaticPages() {
   for (const page of staticPages) {
     const paragraphs = page.body.map((text) => `<p class="detail-summary">${esc(text)}</p>`).join("\n      ");
+    const contactAction = page.slug === "contact"
+      ? `<p><a class="link-button primary" href="${blogUrl}/" target="_blank" rel="noopener noreferrer">블로그에서 문의하기</a></p>`
+      : "";
     writePage(`${page.slug}/index.html`, pageShell({
       title: page.title,
       description: page.description,
@@ -819,6 +882,7 @@ function writeStaticPages() {
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <h1 class="page-title">${esc(page.title)}</h1>
       ${paragraphs}
+      ${contactAction}
     </article>`
     }));
   }
@@ -887,6 +951,7 @@ function makeGuide(guide) {
       <p class="eyebrow">Guide</p>
       <h1 class="page-title">${esc(guide.title)}</h1>
       <p class="detail-summary">${esc(guide.intro)}</p>
+${contentMeta()}
 ${sections}
       <section class="detail-section">
         <h2>관련 청년지원사업</h2>
@@ -897,6 +962,7 @@ ${sections}
         <h2>자주 묻는 질문</h2>
         <div class="faq-list">${faq}</div>
       </section>
+      <p class="source-footnote">정책 데이터와 공식 공고를 바탕으로 편집팀이 주제별로 정리했습니다. 지원 조건은 바뀔 수 있으므로 신청 전 공식 링크를 확인하세요. <a href="/editorial-policy/">편집 기준 보기</a></p>
     </article>`;
   writePage(`guides/${guide.slug}/index.html`, pageShell({
     title: guide.title,
@@ -916,7 +982,12 @@ ${sections}
         headline: guide.title,
         description: guide.description,
         url: absoluteUrl(guidePath),
-        dateModified: payload.updatedAt || new Date().toISOString().slice(0, 10),
+        dateModified: contentDate,
+        author: {
+          "@type": "Organization",
+          name: `${siteName} 편집팀`,
+          url: absoluteUrl("/about/")
+        },
         publisher: {
           "@type": "Organization",
           name: siteName,
@@ -1061,15 +1132,15 @@ function writeSitemap() {
     sitemapEntry("/status/", "0.8"),
     sitemapEntry("/guides/", "0.8"),
     sitemapEntry("/calendar/", "0.8"),
-    ...regions.map(([slug]) => sitemapEntry(`/region/${slug}/`, slug === "all" ? "0.8" : "0.7")),
-    ...types.map(([slug]) => sitemapEntry(`/type/${slug}/`, slug === "all" ? "0.8" : "0.7")),
-    ...statuses.map(([slug]) => sitemapEntry(`/status/${slug}/`, slug === "all" ? "0.8" : "0.7")),
+    ...regions.filter(([slug]) => slug !== "all").map(([slug]) => sitemapEntry(`/region/${slug}/`, "0.7")),
+    ...types.filter(([slug]) => slug !== "all").map(([slug]) => sitemapEntry(`/type/${slug}/`, "0.7")),
+    ...statuses.filter(([slug]) => !["all", "closed"].includes(slug)).map(([slug]) => sitemapEntry(`/status/${slug}/`, "0.7")),
     ...guides.map((guide) => sitemapEntry(`/guides/${guide.slug}/`, "0.75")),
     ...staticPages.map((page) => sitemapEntry(`/${page.slug}/`, "0.5"))
   ];
   const urls = [
     ...coreUrls,
-    ...policies.map((item) => sitemapEntry(`/policy/${encodeURIComponent(item.id)}/`, "0.6"))
+    ...indexablePolicies.map((item) => sitemapEntry(`/policy/${encodeURIComponent(item.id)}/`, "0.6"))
   ];
   writePage("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -1088,9 +1159,9 @@ ${coreUrls.join("\n")}
     `${siteUrl}/status/`,
     `${siteUrl}/guides/`,
     `${siteUrl}/calendar/`,
-    ...regions.map(([slug]) => `${siteUrl}/region/${slug}/`),
-    ...types.map(([slug]) => `${siteUrl}/type/${slug}/`),
-    ...statuses.map(([slug]) => `${siteUrl}/status/${slug}/`),
+    ...regions.filter(([slug]) => slug !== "all").map(([slug]) => `${siteUrl}/region/${slug}/`),
+    ...types.filter(([slug]) => slug !== "all").map(([slug]) => `${siteUrl}/type/${slug}/`),
+    ...statuses.filter(([slug]) => !["all", "closed"].includes(slug)).map(([slug]) => `${siteUrl}/status/${slug}/`),
     ...guides.map((guide) => `${siteUrl}/guides/${guide.slug}/`),
     ...staticPages.map((page) => `${siteUrl}/${page.slug}/`)
   ].join("\n")}
@@ -1130,23 +1201,24 @@ optionIndex("type", "유형별 청년지원사업", "주거, 취업, 금융처�
 optionIndex("status", "상태별 청년지원사업", "신청 가능 여부와 일정 기준으로 정책을 찾습니다.", statuses);
 
 for (const [slug, label] of regions) {
-  const items = label === "전체" ? policies : filterRegion(policies, label);
+  const items = label === "전체" ? indexablePolicies : filterRegion(indexablePolicies, label);
   listPage("region", slug, label, items);
 }
 
 for (const [slug, label] of types) {
-  const items = label === "전체" ? policies : policies.filter((item) => item.type === label);
+  const items = label === "전체" ? indexablePolicies : indexablePolicies.filter((item) => item.type === label);
   listPage("type", slug, label, items);
 }
 
 for (const [slug, label] of statuses) {
-  const items = label === "전체" ? policies : policies.filter((item) => item.status === label);
+  const items = label === "전체" ? indexablePolicies : policies.filter((item) => item.status === label);
   listPage("status", slug, label, items);
 }
 
 writeStaticPages();
 writeGuides();
 writeCalendar();
+syncHomeIndex();
 writeSitemap();
 
-console.log(`Generated ${policies.length} policy pages, ${regions.length + types.length + statuses.length + 3} category pages, ${guides.length + 1} guide pages, calendar, sitemap.xml, and robots.txt.`);
+console.log(`Generated ${policies.length} policy pages (${indexablePolicies.length} indexable), ${regions.length + types.length + statuses.length + 3} category pages, ${guides.length + 1} guide pages, calendar, sitemap.xml, and robots.txt.`);

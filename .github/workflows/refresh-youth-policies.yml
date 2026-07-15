@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   refresh:
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,6 +38,7 @@ jobs:
         run: |
           node --check pages-youth-policy/scripts/fetch-policies.mjs
           node --check pages-youth-policy/scripts/generate-pages.mjs
+          node pages-youth-policy/scripts/verify-seo.mjs
 
       - name: Detect changes
         id: changes
