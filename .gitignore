@@ -2,3 +2,12 @@
 outputs/
 work/
 *.log
+youthzip-android/node_modules/
+youthzip-android/dist/
+youthzip-android/android/.gradle/
+youthzip-android/android/build/
+youthzip-android/android/app/build/
+youthzip-android/android/local.properties
+youthzip-android/.idea/
+*.jks
+*.keystore

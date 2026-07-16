@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f9f2">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="청년 지원사업을 지역, 유형, 신청 상태에 따라 찾고 마감 알림을 받는 청년혜택.zip 앱">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; connect-src 'self' https://youthzip.pages.dev; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self';">
+    <title>청년혜택.zip</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">YOUTHZIP</p>
+          <h1>청년혜택.zip</h1>
+        </div>
+        <button class="icon-button" id="refreshButton" type="button" aria-label="정책 새로고침" title="정책 새로고침">
+          <i data-lucide="refresh-cw"></i>
+        </button>
+      </header>
+
+      <main id="mainContent">
+        <section class="view" id="searchView" aria-labelledby="searchHeading">
+          <div class="view-heading">
+            <div>
+              <h2 id="searchHeading">내게 맞는 정책 찾기</h2>
+              <p id="updatedLabel">정책 데이터를 불러오는 중입니다</p>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <label class="search-box" for="searchInput">
+              <i data-lucide="search"></i>
+              <input id="searchInput" type="search" inputmode="search" autocomplete="off" placeholder="월세, 취업, 교통비 검색">
+            </label>
+            <button class="filter-button" id="openFilterButton" type="button" aria-label="검색 조건 열기">
+              <i data-lucide="sliders-horizontal"></i>
+              <span>조건</span>
+              <b id="filterCount" hidden>0</b>
+            </button>
+          </div>
+
+          <div class="quick-filters" aria-label="빠른 검색 조건">
+            <button class="chip is-active" type="button" data-quick="all">전체</button>
+            <button class="chip" type="button" data-quick="deadline">7일 내 마감</button>
+            <button class="chip" type="button" data-quick="housing">주거</button>
+            <button class="chip" type="button" data-quick="job">취업</button>
+          </div>
+
+          <div class="result-bar">
+            <strong id="resultCount">0개 정책</strong>
+            <select id="sortSelect" aria-label="정렬 방식">
+              <option value="recommend">추천순</option>
+              <option value="deadline">마감 빠른순</option>
+              <option value="newest">신규순</option>
+            </select>
+          </div>
+          <div class="policy-list" id="policyList" aria-live="polite"></div>
+          <button class="load-more" id="loadMoreButton" type="button" hidden>정책 더 보기</button>
+        </section>
+
+        <section class="view" id="calendarView" aria-labelledby="calendarHeading" hidden>
+          <div class="view-heading">
+            <div>
+              <h2 id="calendarHeading">마감 일정</h2>
+              <p>신청 종료일이 가까운 정책을 날짜별로 확인하세요.</p>
+            </div>
+          </div>
+          <div class="deadline-summary" id="deadlineSummary"></div>
+          <div class="deadline-list" id="deadlineList"></div>
+        </section>
+
+        <section class="view" id="favoritesView" aria-labelledby="favoritesHeading" hidden>
+          <div class="view-heading">
+            <div>
+              <h2 id="favoritesHeading">찜한 정책</h2>
+              <p>로그인 없이 이 기기에 저장됩니다.</p>
+            </div>
+          </div>
+          <div class="policy-list" id="favoriteList"></div>
+        </section>
+
+        <section class="view" id="settingsView" aria-labelledby="settingsHeading" hidden>
+          <div class="view-heading">
+            <div>
+              <h2 id="settingsHeading">설정</h2>
+              <p>정책 정보와 앱 이용 기준을 확인하세요.</p>
+            </div>
+          </div>
+          <div class="settings-list">
+            <button type="button" data-open-url="https://youthzip.pages.dev/">
+              <span><b>청년혜택.zip 홈페이지</b><small>전체 정책과 검색 가이드 보기</small></span>
+              <i data-lucide="external-link"></i>
+            </button>
+            <button type="button" data-open-url="https://youthzip.pages.dev/about/">
+              <span><b>서비스 소개</b><small>운영 목적과 정보 기준</small></span>
+              <i data-lucide="chevron-right"></i>
+            </button>
+            <button type="button" data-open-url="https://youthzip.pages.dev/privacy/">
+              <span><b>개인정보처리방침</b><small>저장 정보와 처리 기준</small></span>
+              <i data-lucide="chevron-right"></i>
+            </button>
+            <button type="button" data-open-url="https://youthzip.pages.dev/notice/">
+              <span><b>면책 및 편집 방침</b><small>신청 전 공식 공고를 확인하세요</small></span>
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+          <p class="app-version">청년혜택.zip Android v0.1.0</p>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="앱 메뉴">
+        <button class="is-active" type="button" data-tab="search">
+          <i data-lucide="search"></i><span>정책 찾기</span>
+        </button>
+        <button type="button" data-tab="calendar">
+          <i data-lucide="calendar-days"></i><span>마감</span>
+        </button>
+        <button type="button" data-tab="favorites">
+          <i data-lucide="heart"></i><span>찜</span>
+          <b id="favoriteBadge" hidden>0</b>
+        </button>
+        <button type="button" data-tab="settings">
+          <i data-lucide="settings"></i><span>설정</span>
+        </button>
+      </nav>
+    </div>
+
+    <dialog class="filter-dialog" id="filterDialog">
+      <form method="dialog" id="filterForm">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">FILTER</p><h2>검색 조건</h2></div>
+          <button class="icon-button" value="cancel" aria-label="조건 창 닫기" title="닫기"><i data-lucide="x"></i></button>
+        </div>
+        <label>지역<select id="regionSelect"><option value="">전체 지역</option></select></label>
+        <label>지원 유형<select id="typeSelect"><option value="">전체 유형</option></select></label>
+        <label>신청 상태<select id="statusSelect"><option value="">전체 상태</option></select></label>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="resetFilterButton" type="button">초기화</button>
+          <button class="primary-button" id="applyFilterButton" value="default">결과 보기</button>
+        </div>
+      </form>
+    </dialog>
+
+    <section class="detail-view" id="detailView" aria-labelledby="detailTitle" hidden>
+      <header>
+        <button class="icon-button" id="closeDetailButton" type="button" aria-label="상세 닫기" title="뒤로"><i data-lucide="arrow-left"></i></button>
+        <strong>정책 상세</strong>
+        <button class="icon-button" id="detailShareButton" type="button" aria-label="정책 공유" title="공유"><i data-lucide="share-2"></i></button>
+      </header>
+      <article id="detailContent"></article>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

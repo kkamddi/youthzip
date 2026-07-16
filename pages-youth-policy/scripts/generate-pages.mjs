@@ -61,7 +61,7 @@ const statuses = [
   ["closed", "마감"]
 ];
 
-const generatedDirs = ["policy", "region", "type", "status", "guides", "calendar"];
+const generatedDirs = ["policy", "region", "type", "status", "guides", "calendar", "data/app"];
 
 const staticPages = [
   {
@@ -109,6 +109,7 @@ const staticPages = [
     description: "청년혜택.zip의 개인정보 처리 안내입니다.",
     body: [
       "청년혜택.zip은 현재 회원가입, 댓글, 직접 신청 기능을 제공하지 않으며 이용자의 주민등록번호, 연락처, 계좌번호 등 민감한 개인정보를 직접 수집하지 않습니다.",
+      "청년혜택.zip Android 앱의 찜 목록과 검색 조건은 이용자의 기기에만 저장됩니다. 마감 알림을 켜면 선택한 정책의 종료일을 기준으로 기기 내 로컬 알림이 예약되며, 이 정보는 청년혜택.zip 서버로 전송되지 않습니다.",
       "서비스 품질과 이용 현황 확인을 위해 Cloudflare Web Analytics와 같은 비식별 통계 도구를 사용할 수 있습니다. 향후 광고 서비스가 도입되면 쿠키 사용과 광고 사업자 관련 내용을 이 방침에 고지합니다.",
       "외부 공식 신청 사이트로 이동한 뒤 입력하는 개인정보는 해당 기관의 개인정보처리방침을 따릅니다."
     ]
@@ -1193,8 +1194,42 @@ Sitemap: ${siteUrl}/sitemap-static.xml
 `);
 }
 
+function writeAppData() {
+  const appPolicies = indexablePolicies.map((item) => ({
+    id: item.id,
+    title: item.title,
+    region: item.regionGroup || item.region || "전국",
+    city: item.city || "",
+    type: item.type || "기타",
+    status: item.status || "신청중",
+    startDate: item.startDate || "",
+    endDate: item.endDate || "",
+    period: item.period || displayPeriod(item),
+    summary: teaser(item.summary || item.support)
+  }));
+
+  writePage("data/app/index.json", JSON.stringify({
+    version: 1,
+    updatedAt: contentDate,
+    count: appPolicies.length,
+    policies: appPolicies
+  }));
+
+  for (const item of policies) {
+    writePage(`data/app/policy/${encodeURIComponent(item.id)}.json`, JSON.stringify({
+      ...item,
+      region: item.regionGroup || item.region || "전국",
+      period: item.period || displayPeriod(item),
+      officialUrl: safeUrl(item.officialUrl),
+      webUrl: absoluteUrl(`/policy/${encodeURIComponent(item.id)}/`),
+      updatedAt: contentDate
+    }));
+  }
+}
+
 for (const dir of generatedDirs) resetDir(dir);
 for (const item of policies) makeDetail(item);
+writeAppData();
 
 optionIndex("region", "지역별 청년지원사업", "살고 있거나 신청하려는 지역 기준으로 정책을 찾습니다.", regions);
 optionIndex("type", "유형별 청년지원사업", "주거, 취업, 금융처럼 필요한 지원 분야 기준으로 정책을 찾습니다.", types);
