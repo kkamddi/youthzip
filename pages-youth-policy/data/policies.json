@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-16",
+  "updatedAt": "2026-07-17",
   "sourceName": "온통청년 청년정책 통합검색",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "policies": [
@@ -8522,7 +8522,7 @@
       "regionGroup": "제주",
       "city": "제주",
       "type": "교육",
-      "status": "마감임박",
+      "status": "마감",
       "support": "제주의 내일을 만들어가는 기업가적이고 자기주도적인 인재 양성 교육을 통해 취·창업 지원",
       "period": "2026-06-29 ~ 2026-07-16",
       "startDate": "2026-06-29",
