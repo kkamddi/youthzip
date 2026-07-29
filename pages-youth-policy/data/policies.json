@@ -15,7 +15,8 @@
       "name": "마이홈·공급기관 공식 공고",
       "url": "https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do",
       "count": 29,
-      "status": "ok"
+      "status": "fallback",
+      "error": "fetch failed"
     },
     {
       "key": "hug",
