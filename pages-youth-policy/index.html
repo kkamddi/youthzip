@@ -28,6 +28,11 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="청년혜택.zip">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
@@ -749,6 +754,17 @@
       </div>
     </section>
   </main>
+
+  <aside class="install-prompt" data-install-prompt hidden aria-labelledby="install-prompt-title">
+    <button class="install-prompt-close" type="button" data-install-close aria-label="홈 화면 추가 안내 닫기">×</button>
+    <img src="/assets/apple-touch-icon.png" alt="" width="48" height="48" aria-hidden="true">
+    <div class="install-prompt-copy">
+      <h2 id="install-prompt-title">앱처럼 빠르게 열어보세요</h2>
+      <p data-install-description>홈 화면에 추가하면 청년 정책을 바로 찾을 수 있습니다.</p>
+      <p class="install-help" data-install-help hidden>Safari 하단의 공유 버튼을 누른 뒤 ‘홈 화면에 추가’를 선택하세요.</p>
+    </div>
+    <button class="install-prompt-action" type="button" data-install-button>홈 화면에 추가</button>
+  </aside>
 
   <footer class="site-footer">
     <nav class="footer-links" aria-label="사이트 안내">

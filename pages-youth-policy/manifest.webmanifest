@@ -1,0 +1,43 @@
+{
+  "id": "/",
+  "name": "청년혜택.zip - 청년 지원사업 찾기",
+  "short_name": "청년혜택.zip",
+  "description": "청년 혜택과 지원금을 지역, 유형, 신청 상태별로 찾고 마감 일정을 확인하는 서비스",
+  "lang": "ko-KR",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f8f5",
+  "theme_color": "#245f4c",
+  "icons": [
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "정책 찾기",
+      "short_name": "정책 찾기",
+      "url": "/#finder"
+    },
+    {
+      "name": "마감 캘린더",
+      "short_name": "마감",
+      "url": "/calendar/"
+    },
+    {
+      "name": "청년 혜택 가이드",
+      "short_name": "가이드",
+      "url": "/guides/"
+    }
+  ]
+}

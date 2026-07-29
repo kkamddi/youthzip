@@ -1194,6 +1194,14 @@ Sitemap: ${siteUrl}/sitemap-static.xml
 /robots.txt
   Content-Type: text/plain; charset=utf-8
 
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: no-cache
+
+/sw.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: no-cache
+
 /data/*
   Cache-Control: public, max-age=1800
 `);

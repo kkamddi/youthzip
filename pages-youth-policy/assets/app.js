@@ -4,6 +4,8 @@
   const DATA_URL = "/data/policies.json";
   const FILTERS_KEY = "youthzip:filters";
   const FAVORITES_KEY = "youthzip:favorites";
+  const INSTALL_DISMISSED_KEY = "youthzip:install-dismissed";
+  const INSTALL_DISMISS_DAYS = 14;
   const INITIAL_POLICY_LIMIT = 30;
   const REGIONS = ["전체", "전국", "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
   const TYPES = ["전체", "주거", "취업", "금융", "교육", "교통", "문화", "복지", "창업"];
@@ -21,8 +23,86 @@
   };
 
   let policies = [];
+  let deferredInstallPrompt = null;
 
   const $ = (selector) => document.querySelector(selector);
+
+  function isStandalone() {
+    return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  }
+
+  function installPromptDismissed() {
+    try {
+      const dismissedAt = Number(localStorage.getItem(INSTALL_DISMISSED_KEY) || 0);
+      return dismissedAt > 0 && Date.now() - dismissedAt < INSTALL_DISMISS_DAYS * 86400000;
+    } catch {
+      return false;
+    }
+  }
+
+  function setupInstallPrompt() {
+    const prompt = $("[data-install-prompt]");
+    const closeButton = $("[data-install-close]");
+    const installButton = $("[data-install-button]");
+    const description = $("[data-install-description]");
+    const help = $("[data-install-help]");
+    if (!prompt || !closeButton || !installButton || isStandalone() || installPromptDismissed()) return;
+
+    const hidePrompt = (persist = false) => {
+      prompt.hidden = true;
+      if (persist) {
+        try {
+          localStorage.setItem(INSTALL_DISMISSED_KEY, String(Date.now()));
+        } catch {}
+      }
+    };
+    const showPrompt = (mode) => {
+      if (isStandalone() || installPromptDismissed()) return;
+      prompt.dataset.installMode = mode;
+      installButton.textContent = mode === "ios" ? "추가 방법 보기" : "홈 화면에 추가";
+      if (description) {
+        description.textContent = mode === "ios"
+          ? "Safari에서 홈 화면에 추가하면 앱처럼 바로 열 수 있습니다."
+          : "홈 화면에 추가하면 청년 정책을 바로 찾을 수 있습니다.";
+      }
+      if (help) help.hidden = true;
+      prompt.hidden = false;
+    };
+
+    closeButton.addEventListener("click", () => hidePrompt(true));
+    installButton.addEventListener("click", async () => {
+      if (prompt.dataset.installMode === "ios") {
+        if (help) help.hidden = false;
+        installButton.hidden = true;
+        return;
+      }
+      if (!deferredInstallPrompt) return;
+      await deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      if (choice.outcome === "accepted") hidePrompt();
+      else hidePrompt(true);
+    });
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      showPrompt("native");
+    });
+    window.addEventListener("appinstalled", () => {
+      deferredInstallPrompt = null;
+      hidePrompt();
+    });
+
+    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIos) window.setTimeout(() => showPrompt("ios"), 700);
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      });
+    }
+  }
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -518,6 +598,7 @@
     render();
   }
 
+  setupInstallPrompt();
   boot().catch((error) => {
     const list = $("[data-policy-list]");
     if (!list?.children.length) {
