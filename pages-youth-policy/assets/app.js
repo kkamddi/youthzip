@@ -193,6 +193,19 @@
     return text.length > 95 ? `${text.slice(0, 95)}...` : text;
   }
 
+  function typeClass(type) {
+    return {
+      주거: "housing",
+      취업: "job",
+      금융: "finance",
+      교육: "education",
+      교통: "transport",
+      문화: "culture",
+      복지: "welfare",
+      창업: "startup"
+    }[type] || "general";
+  }
+
   function displayPeriod(item) {
     return String(item?.period || "").trim() || "공식 공고 확인";
   }
@@ -201,7 +214,7 @@
     const detail = `/policy/${encodeURIComponent(item.id)}/`;
     const official = item.officialUrl || "#";
     return `
-      <article class="policy-card spotlight-card${item.effectiveStatus === "마감임박" ? " is-closing-soon" : ""}">
+      <article class="policy-card spotlight-card type-${typeClass(item.type)}${item.effectiveStatus === "마감임박" ? " is-closing-soon" : ""}">
         <div class="labels">
           <span>${escapeHtml(item.regionGroup || item.region)}</span>
           <span>${escapeHtml(item.type)}</span>
@@ -222,6 +235,9 @@
     $("[data-region-pills]").innerHTML = REGIONS.map((value) => pill(value, value === state.region)).join("");
     $("[data-type-pills]").innerHTML = TYPES.map((value) => pill(value, value === state.type)).join("");
     $("[data-status-pills]").innerHTML = STATUSES.map((value) => pill(value, value === state.status)).join("");
+    document.querySelectorAll(".type-shortcut").forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.filterPresetType === state.type);
+    });
   }
 
   function renderHomeSections() {
@@ -252,6 +268,14 @@
         ? weekClosing.map((item) => compactCard(item, `${daysUntil(parseDate(item.endDate))}일 남음`)).join("")
         : `<p class="empty">이번 주 마감 정책이 없습니다.</p>`;
     }
+    const weekCount = $("[data-week-closing-count]");
+    if (weekCount) weekCount.textContent = policies
+      .filter((item) => {
+        const remaining = daysUntil(parseDate(item.endDate));
+        return item.effectiveStatus !== "마감" && remaining !== null && remaining >= 0 && remaining <= 7;
+      })
+      .length
+      .toLocaleString("ko-KR");
     if (newTarget) {
       newTarget.innerHTML = newest.length
         ? newest.map((item) => compactCard(item, "신규")).join("")
@@ -302,13 +326,13 @@
           ? "closing-soon"
           : "";
     return `
-      <article class="policy-card${isClosingSoon ? " is-closing-soon" : ""}">
+      <article class="policy-card type-${typeClass(item.type)}${isClosingSoon ? " is-closing-soon" : ""}">
         <div class="labels">
           <span>${escapeHtml(item.regionGroup || item.region)}</span>
           <span>${escapeHtml(item.type)}</span>
           <b class="status ${statusModifier}">${escapeHtml(item.effectiveStatus)}</b>
         </div>
-        <h3>${escapeHtml(item.title)}</h3>
+        <h3><a href="${escapeHtml(detail)}">${escapeHtml(item.title)}</a></h3>
         <p class="summary">${escapeHtml(teaser(item.summary || item.support))}</p>
         <dl class="meta brief">
           <div><dt>기간</dt><dd>${escapeHtml(displayPeriod(item))}</dd></div>

@@ -442,9 +442,12 @@ function seoHead({ title, description, path: pagePath = "/", type = "website", r
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   const metaDescription = trimMeta(description);
   const canonicalUrl = absoluteUrl(pagePath);
+  const robotsContent = robots.includes("noindex")
+    ? robots
+    : `${robots}, max-image-preview:large, max-snippet:-1, max-video-preview:-1`;
   return `  <title>${esc(fullTitle)}</title>
   <meta name="description" content="${esc(metaDescription)}">
-  <meta name="robots" content="${esc(robots)}">
+  <meta name="robots" content="${esc(robotsContent)}">
   <link rel="canonical" href="${esc(canonicalUrl)}">
   <meta property="og:site_name" content="${esc(siteName)}">
   <meta property="og:locale" content="ko_KR">
@@ -541,7 +544,7 @@ ${schemaTags}
 <body>
   <header class="site-header">
     <a class="brand" href="/" aria-label="청년혜택.zip 홈">
-      <img class="brand-mark" src="/assets/youthzip-profile.png" alt="" width="42" height="42" aria-hidden="true">
+      <img class="brand-mark" src="/assets/apple-touch-icon.png" alt="" width="42" height="42" aria-hidden="true">
       <span class="brand-copy">
         <strong>청년혜택.zip</strong>
         <span>청년지원사업 찾기</span>
@@ -582,7 +585,7 @@ function policyCard(item) {
   const official = safeUrl(item.officialUrl);
   const isClosingSoon = item.status === "마감임박";
   return `
-        <article class="policy-card compact${isClosingSoon ? " is-closing-soon" : ""}">
+        <article class="policy-card compact type-${typeSlug(item)}${isClosingSoon ? " is-closing-soon" : ""}">
           <div class="labels">
             <span>${esc(item.regionGroup || item.region)}</span>
             <span>${esc(item.type)}</span>
@@ -674,7 +677,7 @@ function makeDetail(item) {
   const related = relatedPolicies(item);
   const detailPath = `/policy/${encodeURIComponent(item.id)}/`;
   const description = trimMeta(`${item.regionGroup || item.region || "전국"} ${item.type || "청년"} 정책(${item.id}): ${item.title}. 신청기간 ${displayPeriod(item)}, 지원내용, 대상 조건과 공식 링크를 확인하세요.`);
-  const body = `    <article class="detail-page">
+  const body = `    <article class="detail-page type-${typeSlug(item)}">
       <a class="back-link" href="/">← 정책 찾기로 돌아가기</a>
       <div class="labels">
         <span>${esc(item.regionGroup || item.region)}</span>
@@ -729,7 +732,9 @@ ${contentMeta()}
         "@type": "Article",
         headline: policySeoTitle(item),
         description,
+        image: defaultOgImage,
         url: absoluteUrl(detailPath),
+        datePublished: contentDate,
         dateModified: contentDate,
         author: {
           "@type": "Organization",
