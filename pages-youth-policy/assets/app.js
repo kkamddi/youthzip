@@ -149,6 +149,7 @@
       item.region,
       item.regionGroup,
       item.city,
+      ...(Array.isArray(item.regions) ? item.regions : []),
       item.type,
       item.summary,
       item.support,
@@ -373,10 +374,12 @@
     const keyword = state.keyword.toLocaleLowerCase("ko-KR");
     const favorites = favoriteIds();
     return policies.filter((item) => {
-      const regionMatch = state.region === "전체" ||
-        item.regionGroup === state.region ||
-        item.city === state.region ||
-        String(item.region || "").includes(state.region);
+      const itemRegions = Array.isArray(item.regions) ? item.regions : [];
+      const regionMatch = state.region === "전체" || (itemRegions.length
+        ? itemRegions.includes(state.region)
+        : item.regionGroup === state.region ||
+          item.city === state.region ||
+          String(item.region || "").includes(state.region));
       return regionMatch &&
         (state.type === "전체" || item.type === state.type) &&
         (state.status === "전체" || item.effectiveStatus === state.status) &&

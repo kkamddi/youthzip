@@ -37,7 +37,9 @@ jobs:
       - name: Validate scripts
         run: |
           node --check pages-youth-policy/scripts/fetch-policies.mjs
+          node --check pages-youth-policy/scripts/official-housing-sources.mjs
           node --check pages-youth-policy/scripts/generate-pages.mjs
+          node pages-youth-policy/scripts/verify-policy-sources.mjs
           node pages-youth-policy/scripts/verify-seo.mjs
 
       - name: Detect changes

@@ -1,6 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  fetchHugPolicies,
+  fetchMyHomePolicies,
+  refreshPolicyStatus
+} from "./official-housing-sources.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -192,11 +197,69 @@ function loadManualPolicies() {
   return Array.isArray(payload) ? payload : payload.policies || [];
 }
 
-function mergeManualPolicies(policies) {
-  const seen = new Set(policies.map((item) => String(item.id)));
-  const manualPolicies = loadManualPolicies().filter((item) => item?.id && item?.title);
-  const missingManualPolicies = manualPolicies.filter((item) => !seen.has(String(item.id)));
-  return [...missingManualPolicies, ...policies];
+function loadPreviousPolicies() {
+  if (!fs.existsSync(outPath)) return [];
+  try {
+    const payload = JSON.parse(fs.readFileSync(outPath, "utf8"));
+    return Array.isArray(payload.policies) ? payload.policies : [];
+  } catch {
+    return [];
+  }
+}
+
+function titleFingerprint(item) {
+  const title = normalizeSpace(item.title)
+    .replace(/^\[(?:정정공고|신규모집)\]\s*/g, "")
+    .replace(/[^\p{L}\p{N}]+/gu, "")
+    .toLocaleLowerCase("ko-KR");
+  const regions = Array.isArray(item.regions) && item.regions.length
+    ? [...item.regions].sort().join(",")
+    : item.regionGroup || item.region || "";
+  return `${title}|${regions}|${item.startDate || ""}|${item.endDate || ""}`;
+}
+
+function mergePolicySources(groups) {
+  const ids = new Set();
+  const fingerprints = new Map();
+  const merged = [];
+  for (const item of groups.flat()) {
+    if (!item?.id || !item?.title || ids.has(String(item.id))) continue;
+    const normalized = refreshPolicyStatus(item);
+    const fingerprint = titleFingerprint(normalized);
+    const matchingSource = fingerprints.get(fingerprint);
+    if (matchingSource && matchingSource !== normalized.sourceKey) continue;
+    ids.add(String(normalized.id));
+    fingerprints.set(fingerprint, normalized.sourceKey);
+    merged.push(normalized);
+  }
+  return merged;
+}
+
+async function collectOptionalSource({ key, name, url, collector, previousPolicies }) {
+  try {
+    const policies = await collector();
+    return {
+      policies,
+      metadata: { key, name, url, count: policies.length, status: "ok" }
+    };
+  } catch (error) {
+    const policies = previousPolicies
+      .filter((item) => item.sourceKey === key)
+      .map((item) => refreshPolicyStatus(item))
+      .filter((item) => item.status !== "마감");
+    console.warn(`[${name}] collection failed; preserving ${policies.length} previous policies: ${error.message}`);
+    return {
+      policies,
+      metadata: {
+        key,
+        name,
+        url,
+        count: policies.length,
+        status: policies.length ? "fallback" : "error",
+        error: error.message
+      }
+    };
+  }
 }
 
 async function getSession() {
@@ -287,6 +350,23 @@ function mapPolicy(item) {
 }
 
 async function main() {
+  const previousPolicies = loadPreviousPolicies();
+  const housingPromise = Promise.all([
+    collectOptionalSource({
+      key: "myhome",
+      name: "마이홈·공급기관 공식 공고",
+      url: "https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do",
+      collector: fetchMyHomePolicies,
+      previousPolicies
+    }),
+    collectOptionalSource({
+      key: "hug",
+      name: "HUG 안심전세포털",
+      url: "https://www.khug.or.kr/jeonse/web/s07/s070301.jsp",
+      collector: fetchHugPolicies,
+      previousPolicies
+    })
+  ]);
   const session = await getSession();
   const firstPayload = await fetchPage(1, 100, session);
   const firstItems = responseItems(firstPayload);
@@ -303,19 +383,52 @@ async function main() {
     seen.add(item.id);
     return true;
   });
-  const mergedPolicies = mergeManualPolicies(policies);
+  const [myHomeSource, hugSource] = await housingPromise;
+  const manualPolicies = loadManualPolicies()
+    .filter((item) => item?.id && item?.title)
+    .map((item) => ({ ...item, sourceKey: item.sourceKey || "manual", sourceName: item.sourceName || "직접 확인한 공식 정책" }));
+  const mergedPolicies = mergePolicySources([
+    manualPolicies,
+    myHomeSource.policies,
+    hugSource.policies,
+    policies.map((item) => ({ ...item, sourceKey: "youthcenter", sourceName: "온통청년 청년정책 통합검색" }))
+  ]);
+  const sources = [
+    {
+      key: "youthcenter",
+      name: "온통청년 청년정책 통합검색",
+      url: sourceUrl,
+      count: policies.length,
+      status: "ok"
+    },
+    myHomeSource.metadata,
+    hugSource.metadata,
+    {
+      key: "manual",
+      name: "직접 확인한 공식 정책",
+      url: "https://youthzip.pages.dev/sources/",
+      count: manualPolicies.length,
+      status: "ok"
+    }
+  ];
+  const outputPolicies = mergedPolicies.map((item) => {
+    if (item.sourceKey !== "youthcenter") return item;
+    const { sourceKey, sourceName, ...policy } = item;
+    return policy;
+  });
   const output = {
     updatedAt: new Date().toISOString().slice(0, 10),
-    sourceName: "온통청년 청년정책 통합검색",
+    sourceName: "온통청년·마이홈·HUG 공식 정책 데이터",
     sourceUrl,
-    policies: mergedPolicies
+    sources,
+    policies: outputPolicies
   };
   fs.writeFileSync(outPath, `${JSON.stringify(output, null, 2)}\n`, "utf8");
-  console.log(`Fetched ${policies.length} policies and merged ${mergedPolicies.length - policies.length} manual policies from ${sourceName(output)}.`);
-}
-
-function sourceName(output) {
-  return output.sourceName;
+  console.log(
+    `Fetched ${policies.length} youth policies, ${myHomeSource.policies.length} MyHome policies, ` +
+    `${hugSource.policies.length} HUG policies, and ${manualPolicies.length} manual policies. ` +
+    `Merged total: ${mergedPolicies.length}.`
+  );
 }
 
 main().catch((error) => {

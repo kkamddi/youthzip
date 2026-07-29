@@ -89,7 +89,7 @@ const staticPages = [
     title: "자료·이미지 출처",
     description: "청년혜택.zip에서 사용하는 이미지와 자료 출처 안내입니다.",
     body: [
-      "정책 정보는 온통청년 정책 데이터와 각 운영기관의 공식 공고를 출처로 사용하며, 모든 정책 상세 페이지에서 해당 공식 링크를 제공합니다.",
+      "정책 정보는 온통청년 정책 데이터, 마이홈·LH 등 공공주택 공급기관 공고, HUG 안심전세포털과 각 운영기관의 공식 공고를 출처로 사용하며, 모든 정책 상세 페이지에서 해당 공식 링크를 제공합니다.",
       "현재 정책 목록과 상세 페이지는 별도 정책 이미지를 사용하지 않고 텍스트 정보 중심으로 구성합니다.",
       "향후 이미지가 추가되는 경우 공공누리, 공식 보도자료, 직접 제작 이미지 등 사용 가능한 자료를 기준으로 출처를 함께 표기합니다."
     ]
@@ -822,11 +822,13 @@ function typeSlug(item) {
 }
 
 function filterRegion(items, label) {
-  return items.filter((item) =>
-    item.regionGroup === label ||
-    item.city === label ||
-    String(item.region || "").includes(label)
-  );
+  return items.filter((item) => {
+    const regions = Array.isArray(item.regions) ? item.regions : [];
+    if (regions.length) return regions.includes(label);
+    return item.regionGroup === label ||
+      item.city === label ||
+      String(item.region || "").includes(label);
+  });
 }
 
 function listPage(kind, slug, label, items) {
@@ -1212,6 +1214,7 @@ function writeAppData() {
     id: item.id,
     title: item.title,
     region: item.regionGroup || item.region || "전국",
+    regions: Array.isArray(item.regions) ? item.regions : [],
     city: item.city || "",
     type: item.type || "기타",
     status: item.status || "신청중",
