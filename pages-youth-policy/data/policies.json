@@ -14,7 +14,7 @@
       "key": "myhome",
       "name": "마이홈·공급기관 공식 공고",
       "url": "https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do",
-      "count": 27,
+      "count": 26,
       "status": "fallback",
       "error": "fetch failed"
     },
@@ -436,32 +436,6 @@
       "sourceUpdatedAt": "2026-07-21"
     },
     {
-      "id": "myhome-20758",
-      "title": "충주첨단 행복주택 자격완화 예비입주자 모집[2026.07.15]",
-      "regions": [
-        "충북"
-      ],
-      "region": "충북",
-      "regionGroup": "충북",
-      "city": "충북",
-      "type": "주거",
-      "status": "마감임박",
-      "support": "LH의 행복주택 입주자 모집 공고입니다. 신청 전 공급 주택, 임대 조건, 제출 서류를 공식 공고문에서 확인해야 합니다.",
-      "period": "2026-07-30 ~ 2026-07-30",
-      "startDate": "2026-07-30",
-      "endDate": "2026-07-30",
-      "age": "청년·대학생 등 공고별 공급대상 기준",
-      "income": "소득·자산 기준은 모집 공고문 확인",
-      "residence": "충북 소재 주택 및 공고별 거주 조건",
-      "summary": "입주대상은 대학생, 신혼부부, 주거취약계층, 저소득층, 무주택자입니다. LH의 행복주택 모집 일정과 신청 조건을 확인하세요.",
-      "officialUrl": "https://apply.lh.or.kr/lhapply/apply/wt/wrtanc/selectWrtancInfo.do?panId=2015122300020336&ccrCnntSysDsCd=03&uppAisTpCd=06&aisTpCd=10&mi=1026",
-      "tistoryUrl": "",
-      "sourceKey": "myhome",
-      "sourceName": "마이홈·공급기관 공식 공고",
-      "sourceItemId": "20758",
-      "sourceUpdatedAt": "2026-07-15"
-    },
-    {
       "id": "myhome-20893",
       "title": "물금2 천년나무(17형) 행복주택 잔여물량(49호)선착순 동호지정 모집(입주자격완화,선계약 후검증)",
       "regions": [
@@ -812,7 +786,7 @@
       "regionGroup": "서울·부산·인천·경기",
       "city": "서울, 부산, 인천, 경기",
       "type": "주거",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "HUG 든든전세주택 300호(서울 118호, 인천 116호, 경기 62호, 부산 4호) 모집입니다. 주택별 임대보증금과 세부 신청 절차는 공식 모집공고에서 확인해야 합니다.",
       "period": "2026-07-24 ~ 2026-08-07",
       "startDate": "2026-07-24",
@@ -1329,7 +1303,7 @@
       "regionGroup": "광주",
       "city": "광주",
       "type": "교육",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "진로 불안에서 오는 스트레스에 대해 극복할수 있도록 긍정 감정의 선순환 구조를 만들고, 개인이 가진 핵심 강점 영역으로 인생의 방향성을 (재)설계 할수 있도록 지원",
       "period": "2026-07-20 ~ 2026-08-07",
       "startDate": "2026-07-20",
@@ -1557,7 +1531,7 @@
       "regionGroup": "광주",
       "city": "광주",
       "type": "문화",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "○ 지역 청년 창업 활성화 · 창의적 창업 아이템 및 공공데이터 활용 혁신 아이디어 발굴 ○ 청년창업 아이디어 경진대회 개최 · 루키리그(예비창업자)·성장리그(기창업자) 운영 ○ 모집분야 · 기술혁신 · 문화콘텐츠 · 지역문제해결 · 메디뷰티",
       "period": "2026-07-09 ~ 2026-08-07",
       "startDate": "2026-07-09",
