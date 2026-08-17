@@ -23,7 +23,8 @@
       "name": "HUG 안심전세포털",
       "url": "https://www.khug.or.kr/jeonse/web/s07/s070301.jsp",
       "count": 0,
-      "status": "ok"
+      "status": "error",
+      "error": "fetch failed"
     },
     {
       "key": "manual",
@@ -489,7 +490,7 @@
       "regionGroup": "서울",
       "city": "서울",
       "type": "교육",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "산림분야 청년들의 창업 역량강화 및 신규시장 진입을 지원하기 위해 '2026년 청년 산림창업가 시너지캠프' 개최",
       "period": "2026-08-10 ~ 2026-08-25",
       "startDate": "2026-08-10",
