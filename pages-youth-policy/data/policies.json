@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-17",
+  "updatedAt": "2026-08-18",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -23,8 +23,7 @@
       "name": "HUG 안심전세포털",
       "url": "https://www.khug.or.kr/jeonse/web/s07/s070301.jsp",
       "count": 0,
-      "status": "error",
-      "error": "fetch failed"
+      "status": "ok"
     },
     {
       "key": "manual",
