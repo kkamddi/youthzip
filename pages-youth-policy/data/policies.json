@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-06",
+  "updatedAt": "2026-09-07",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -717,7 +717,7 @@
       "regionGroup": "부산",
       "city": "부산",
       "type": "창업",
-      "status": "예정",
+      "status": "신청중",
       "support": "초기 창업 아이디어를 가진 청년들이 아이디어를 실험하고 다듬을 수 있는 기회를 제공하고자 제2회 부산 남구 청년 창업 아이디어 경진대회를 개최합니다",
       "period": "2026-09-07 ~ 2026-09-18",
       "startDate": "2026-09-07",
