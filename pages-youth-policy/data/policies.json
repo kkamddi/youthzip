@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12",
+  "updatedAt": "2026-09-13",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -622,7 +622,7 @@
       "regionGroup": "광주",
       "city": "광주",
       "type": "교육",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "취창업 실패로 상처입고 고립 위기에 빠진 19세 이상 경기도민을 대상으로 평생직업교육을 통한 직업전선 재기 극복 프로그램",
       "period": "2026-02-25 ~ 2026-09-20",
       "startDate": "2026-02-25",
