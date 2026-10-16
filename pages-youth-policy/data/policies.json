@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15",
+  "updatedAt": "2026-10-16",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -7,7 +7,7 @@
       "key": "youthcenter",
       "name": "온통청년 청년정책 통합검색",
       "url": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
-      "count": 3258,
+      "count": 3253,
       "status": "ok"
     },
     {
@@ -9508,44 +9508,6 @@
       "tistoryUrl": ""
     },
     {
-      "id": "20260909005400213395",
-      "title": "남구 AI 콘텐츠 크리에이터 양성교육",
-      "region": "광주",
-      "regionGroup": "광주",
-      "city": "광주",
-      "type": "취업",
-      "status": "신청중",
-      "support": "○ 일시 : 26026. 9. 16.(수) ~ 10. 28.(수) 14:00~17:00 (매주 수,금/총 10차시) ○ 장소 : 청년와락(독립로 2, 2층) ○ 강의 내용 : 생성형 AI 포토그래메트리 활용 3D 에셋 및 영상 제작 교육",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "전남광주통합특별시 남구",
-      "summary": "○ 일시 : 26026. 9. 16.(수) ~ 10. 28.(수) 14:00~17:00 (매주 수,금/총 10차시) ○ 장소 : 청년와락(독립로 2, 2층) ○ 강의 내용 : 생성형 AI 포토그래메트리 활용 3D 에셋 및 영상 제작 교육",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260909005400213395",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260909005400213394",
-      "title": "남구 AI 창업 아카데미",
-      "region": "광주",
-      "regionGroup": "광주",
-      "city": "광주",
-      "type": "취업",
-      "status": "신청중",
-      "support": "○ 일시 : 26026. 9. 30.(수) ~ 10. 29.(목) 18:00~21:00 (매주 수,목/총 10차시) ○ 장소 : 청년와락(독립로 2, 2층) ○ 강의 내용 : 창업 아이디어 발굴부터 시장조사, 마케팅, 시제품 제작, 발표 자료 구성까지 생성형 AI를 활용한 창업 전 과정 실습 교육",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "전남광주통합특별시 남구",
-      "summary": "○ 일시 : 26026. 9. 30.(수) ~ 10. 29.(목) 18:00~21:00 (매주 수,목/총 10차시) ○ 장소 : 청년와락(독립로 2, 2층) ○ 강의 내용 : 창업 아이디어 발굴부터 시장조사, 마케팅, 시제품 제작, 발표 자료 구성까지 생성형 AI를 활용한 창업 전 과정 실습 교육",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260909005400213394",
-      "tistoryUrl": ""
-    },
-    {
       "id": "20260909005400213393",
       "title": "「2026년 청년 창업 성장 육성 프로젝트 지원사업」 청년창업자 모집 공고(3차)",
       "region": "광주",
@@ -10550,25 +10512,6 @@
       "residence": "전남광주통합특별시 목포시,전남광주통합특별시 여수시,전남광주통합특별시 순천시,전남광주통합특별시 나주시,전남광주통합특별시 광양시,전남광주통합특별시 동구,전남광주통합특별시 서구,전남광주통합특별시 남구,전남광주통합특별시 북구,전남광주통합특별시 광산구,전남광주통합특별시 담양군,전남광주통합특별시 곡성군,전남광주통합특별시 구례군,전남광주통합특별시 고흥군,전남광주통합특별시 보성군,전남광주통합특별시 화순군,전남광주통합특별시 장흥군,전남광주통합특별시 강진군,전남광주통합특별시 해남군,전남광주통합특별시 영암군,전남광주통합특별시 무안군,전남광주통합특별시 함평군,전남광주통합특별시 영광군,전남광주통합특별시 장성군,전남광주통합특별시 완도군,전남광주통합특별시 진도군,전남광주통합특별시 신안군",
       "summary": "청년 특강, 네트워킹 프로그램, 버스킹 공연, 플리마켓 및 정책홍보존 운영 등 참여형 부대행사",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260820005400213341",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260818005400213340",
-      "title": "2026년 하반기(2026년도 1학기) 5개 자치구(광주권역) 대학(원)생 학자금 대출이자 지원",
-      "region": "광주",
-      "regionGroup": "광주",
-      "city": "광주",
-      "type": "금융",
-      "status": "마감",
-      "support": "경제적 이유로 교육을 받기 곤란한 지역 대학생과 대학원생, 졸업생에게 균등한 고등교육을 받을 기회를 제공하고 교육비 부담 경감에 기여",
-      "period": "2026-08-18 ~ 2026-09-30",
-      "startDate": "2026-08-18",
-      "endDate": "2026-09-30",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "전남광주통합특별시 동구,전남광주통합특별시 서구,전남광주통합특별시 남구,전남광주통합특별시 북구,전남광주통합특별시 광산구",
-      "summary": "경제적 이유로 교육을 받기 곤란한 지역 대학생과 대학원생, 졸업생에게 균등한 고등교육을 받을 기회를 제공하고 교육비 부담 경감에 기여",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260818005400213340",
       "tistoryUrl": ""
     },
     {
@@ -11652,25 +11595,6 @@
       "residence": "전남광주통합특별시 북구",
       "summary": "2026년 북구의 청년축제 ! 청춘페스타 행사를 함께 기획할 청년을 모집합니다 !",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260722005400213280",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260722005400213279",
-      "title": "(연장신청)청년맞춤형 주택임차보증금 이자지원",
-      "region": "광주",
-      "regionGroup": "광주",
-      "city": "광주",
-      "type": "주거",
-      "status": "마감",
-      "support": "대학(원)생, 취업준비생, 사회초년생의 임대보증금 대출을 알선하고 대출이자의 일부를 이차보전하여 주거안정에 기여 ○ 갱신임차계약 : 2026. 9. 1.(화) 09:00 ~ 9. 10.(목) 18:00 (10일)",
-      "period": "2026-09-11 ~ 2026-09-11",
-      "startDate": "2026-09-11",
-      "endDate": "2026-09-11",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "전남광주통합특별시 동구,전남광주통합특별시 서구,전남광주통합특별시 남구,전남광주통합특별시 북구,전남광주통합특별시 광산구",
-      "summary": "대학(원)생, 취업준비생, 사회초년생의 임대보증금 대출을 알선하고 대출이자의 일부를 이차보전하여 주거안정에 기여 ○ 갱신임차계약 : 2026. 9. 1.(화) 09:00 ~ 9. 10.(목) 18:00 (10일)",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260722005400213279",
       "tistoryUrl": ""
     },
     {
@@ -19860,25 +19784,6 @@
       "residence": "제주특별자치도 제주시",
       "summary": "제주특별자치도 청년을 대상으로 정책 참여 기반을 구축하고, 청년 관련 정보의 통합 제공 및 데이터 기반 정책 수립을 지원하기 위한 온라인 등록·관리 플랫폼 운영 사업임. 청년 개인의 기본 정보 및 정책 참여 이력을 체계적으로 관리함으로써 맞춤형 정책 안내와 수요 분석을 가능하게 하고, 청년정책의 실효성과 체감도를 제고하는 것을 목적으로 함.",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260421005400212829",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260421005400212828",
-      "title": "제주청년센터 운영",
-      "region": "제주",
-      "regionGroup": "제주",
-      "city": "제주",
-      "type": "정책인프라구축",
-      "status": "신청중",
-      "support": "청년과 청년, 청년과 사회를 잇는 중간지원조직으로서 청년의 다양한 활동 지원, 청년정책 발굴, 청년단체 네트워킹, 청년종합정보 제공",
-      "period": "2026-01-01 ~ 2026-12-31",
-      "startDate": "2026-01-01",
-      "endDate": "2026-12-31",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "제주특별자치도 제주시,제주특별자치도 서귀포시",
-      "summary": "청년과 청년, 청년과 사회를 잇는 중간지원조직으로서 청년의 다양한 활동 지원, 청년정책 발굴, 청년단체 네트워킹, 청년종합정보 제공",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260421005400212828",
       "tistoryUrl": ""
     },
     {
