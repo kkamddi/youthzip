@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18",
+  "updatedAt": "2026-10-19",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -394,7 +394,7 @@
       "regionGroup": "충남",
       "city": "충남",
       "type": "주거",
-      "status": "신청중",
+      "status": "마감임박",
       "support": "충청남도내 무주택 청년(19~39세)을 대상으로 주택임차보증금 이자의 30~50%를 지원",
       "period": "2026-10-12 ~ 2026-10-26",
       "startDate": "2026-10-12",
@@ -8564,7 +8564,7 @@
       "regionGroup": "서울",
       "city": "서울",
       "type": "금융",
-      "status": "예정",
+      "status": "신청중",
       "support": "K-MOOC 강좌와 연계한 청년 대상 경제금융 토크콘서트 개최",
       "period": "2026-10-19 ~ 2026-11-25",
       "startDate": "2026-10-19",
@@ -13903,7 +13903,7 @@
       "regionGroup": "인천",
       "city": "인천",
       "type": "취업",
-      "status": "마감임박",
+      "status": "마감",
       "support": "구직단념청년을 발굴, 노동시장 참여 촉진지원",
       "period": "2026-01-01 ~ 2026-10-18",
       "startDate": "2026-01-01",
