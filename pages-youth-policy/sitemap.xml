@@ -346,6 +346,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://youthzip.pages.dev/policy/20261019005400214005/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://youthzip.pages.dev/policy/20261016005400113967/</loc>
     <lastmod>2026-10-19</lastmod>
     <priority>0.6</priority>
@@ -357,11 +362,6 @@
   </url>
   <url>
     <loc>https://youthzip.pages.dev/policy/20261016005400113963/</loc>
-    <lastmod>2026-10-19</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://youthzip.pages.dev/policy/20261016005400113962/</loc>
     <lastmod>2026-10-19</lastmod>
     <priority>0.6</priority>
   </url>
@@ -2036,11 +2036,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://youthzip.pages.dev/policy/20260918005400213427/</loc>
-    <lastmod>2026-10-19</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://youthzip.pages.dev/policy/20260918005400213426/</loc>
     <lastmod>2026-10-19</lastmod>
     <priority>0.6</priority>
@@ -2072,11 +2067,6 @@
   </url>
   <url>
     <loc>https://youthzip.pages.dev/policy/20260917005400213418/</loc>
-    <lastmod>2026-10-19</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://youthzip.pages.dev/policy/20260916005400213417/</loc>
     <lastmod>2026-10-19</lastmod>
     <priority>0.6</priority>
   </url>
@@ -8537,6 +8527,11 @@
   </url>
   <url>
     <loc>https://youthzip.pages.dev/policy/20250605005400110883/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://youthzip.pages.dev/policy/20250624005400111132/</loc>
     <lastmod>2026-10-19</lastmod>
     <priority>0.6</priority>
   </url>
