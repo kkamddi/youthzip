@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-27",
+  "updatedAt": "2026-10-28",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -7,7 +7,7 @@
       "key": "youthcenter",
       "name": "온통청년 청년정책 통합검색",
       "url": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
-      "count": 3634,
+      "count": 3629,
       "status": "ok"
     },
     {
@@ -21925,25 +21925,6 @@
       "tistoryUrl": ""
     },
     {
-      "id": "20260504005400113120",
-      "title": "공공형 축산 스마트팜 인큐베이터 운영",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "창업",
-      "status": "신청중",
-      "support": "사양관리 및 경영관리 등 스마트 축산 ICT 기술 습득 지원",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "사양관리 및 경영관리 등 스마트 축산 ICT 기술 습득 지원",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113120",
-      "tistoryUrl": ""
-    },
-    {
       "id": "20260504005400113119",
       "title": "청년농업인 역량강화 지원",
       "region": "충남",
@@ -22074,25 +22055,6 @@
       "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
       "summary": "도내 대학 재학생 대상으로 충남 쌀 등 지역 농산물 활용한 아침식사를 1,000원에 제공하는 사업",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113113",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260504005400113112",
-      "title": "창업중심 대학 사업 지원",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "교육",
-      "status": "마감",
-      "support": "대학의 창업 인프라를 활용하여 우수한 창업아이템을 보유한 (예비)창업기업의 사업화 지원",
-      "period": "2026-03-03 ~ 2026-03-24",
-      "startDate": "2026-03-03",
-      "endDate": "2026-03-24",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "대학의 창업 인프라를 활용하여 우수한 창업아이템을 보유한 (예비)창업기업의 사업화 지원",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113112",
       "tistoryUrl": ""
     },
     {
@@ -22476,25 +22438,6 @@
       "tistoryUrl": ""
     },
     {
-      "id": "20260504005400113091",
-      "title": "충남 천안아산 강소연구개발특구 육성",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "취업",
-      "status": "신청중",
-      "support": "입주기관의 활발한 신기술 창출 및 사업화를 촉진할 수 있는 환경 조성으로, 특화분야(미래모빌리티 전장기술) 업종기업 중심 양질의 일자리 창출",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 아산시",
-      "summary": "입주기관의 활발한 신기술 창출 및 사업화를 촉진할 수 있는 환경 조성으로, 특화분야(미래모빌리티 전장기술) 업종기업 중심 양질의 일자리 창출",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113091",
-      "tistoryUrl": ""
-    },
-    {
       "id": "20260504005400113090",
       "title": "청년내일저축계좌 지원",
       "region": "충남",
@@ -22606,44 +22549,6 @@
       "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
       "summary": "청년의 참여를 바탕으로 청년이 살기 좋은 환경과 혁신 성장 동력을 갖춘 '청년친화도시' 조성",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113085",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260504005400113084",
-      "title": "충남 인큐베이터(창업보육) 운영",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "창업",
-      "status": "마감",
-      "support": "(예비)창업기업 보육 및 지원을 통한 도내 창업생태계 활성화",
-      "period": "2026-04-01 ~ 2026-04-15",
-      "startDate": "2026-04-01",
-      "endDate": "2026-04-15",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "(예비)창업기업 보육 및 지원을 통한 도내 창업생태계 활성화",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113084",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260504005400113083",
-      "title": "그린스타트업타운 운영",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "창업",
-      "status": "신청중",
-      "support": "신성장·친환경·ICT 분야 스타트업 발굴/육성사업",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "신성장·친환경·ICT 분야 스타트업 발굴/육성사업",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113083",
       "tistoryUrl": ""
     },
     {
