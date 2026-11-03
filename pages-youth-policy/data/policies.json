@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-02",
+  "updatedAt": "2026-11-03",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -7,7 +7,7 @@
       "key": "youthcenter",
       "name": "온통청년 청년정책 통합검색",
       "url": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
-      "count": 3843,
+      "count": 3840,
       "status": "ok"
     },
     {
@@ -25847,44 +25847,6 @@
       "tistoryUrl": ""
     },
     {
-      "id": "20260504005400113126",
-      "title": "충남 청년 뮤직 페스타",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "문화",
-      "status": "신청중",
-      "support": "청년 예술인 지원을 위한 충남의 젊은 문화 활성화 및 도민 문화예술향유 기회 확대",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "청년 예술인 지원을 위한 충남의 젊은 문화 활성화 및 도민 문화예술향유 기회 확대",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113126",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260504005400113125",
-      "title": "충남 음악창작소운영",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "문화",
-      "status": "신청중",
-      "support": "- 충남 지역 청년 뮤지션의 창작·제작·유통·무대경험·산업진입까지 연계하는 통합 음악창작 생태계 구축 - 지역기반 신규 뮤지션 발굴 및 음반 제작·홍보·쇼케이스 지원을 통해 청년의 문화예술 진입장벽 완화 및 자립 기반 마련",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "- 충남 지역 청년 뮤지션의 창작·제작·유통·무대경험·산업진입까지 연계하는 통합 음악창작 생태계 구축 - 지역기반 신규 뮤지션 발굴 및 음반 제작·홍보·쇼케이스 지원을 통해 청년의 문화예술 진입장벽 완화 및 자립 기반 마련",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113125",
-      "tistoryUrl": ""
-    },
-    {
       "id": "20260504005400113123",
       "title": "워케이션 충남 프로그램 운영",
       "region": "충남",
@@ -26585,25 +26547,6 @@
       "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
       "summary": "청년농 주요 지원 정책사업 홍보 및 우수청년농 성공사례 공유로 '청년이 살고 싶은 농촌' 분위기 조성",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113079",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260504005400113078",
-      "title": "지역기반형 콘텐츠코리아랩 운영",
-      "region": "충남",
-      "regionGroup": "충남",
-      "city": "충남",
-      "type": "문화",
-      "status": "신청중",
-      "support": "충남도 내 콘텐츠 창작문화 확산 및 지역 신규 창·제작자 발굴 및 육성을 통한 지역 콘텐츠 전문인력 양성, 콘텐츠 기업 육성",
-      "period": "",
-      "startDate": "",
-      "endDate": "",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "충청남도 천안시,충청남도 공주시,충청남도 보령시,충청남도 아산시,충청남도 논산시,충청남도 계룡시,충청남도 당진시,충청남도 금산군,충청남도 부여군,충청남도 서천군,충청남도 청양군,충청남도 홍성군,충청남도 예산군,충청남도 태안군",
-      "summary": "충남도 내 콘텐츠 창작문화 확산 및 지역 신규 창·제작자 발굴 및 육성을 통한 지역 콘텐츠 전문인력 양성, 콘텐츠 기업 육성",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260504005400113078",
       "tistoryUrl": ""
     },
     {
