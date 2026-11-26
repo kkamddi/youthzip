@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25",
+  "updatedAt": "2026-11-26",
   "sourceName": "온통청년·마이홈·HUG 공식 정책 데이터",
   "sourceUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
   "sources": [
@@ -7,7 +7,7 @@
       "key": "youthcenter",
       "name": "온통청년 청년정책 통합검색",
       "url": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch",
-      "count": 3997,
+      "count": 3994,
       "status": "ok"
     },
     {
@@ -27631,44 +27631,6 @@
       "tistoryUrl": ""
     },
     {
-      "id": "20260522005400213219",
-      "title": "대학생 아르바이트 운영",
-      "region": "강원",
-      "regionGroup": "강원",
-      "city": "강원",
-      "type": "취업",
-      "status": "마감",
-      "support": "방학기간 시정 참여를 통한 사회 경험 및 경제 활동 기회 부여 2026년 하계 (1기) 7. 6. ~ 7. 19. (2기) 7. 20. ~ 8. 2. (3기) 8. 3. ~ 8. 16.",
-      "period": "2026-05-26 ~ 2026-06-05",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-05",
-      "age": "제한없음",
-      "income": "무관",
-      "residence": "강원특별자치도 삼척시",
-      "summary": "방학기간 시정 참여를 통한 사회 경험 및 경제 활동 기회 부여 2026년 하계 (1기) 7. 6. ~ 7. 19. (2기) 7. 20. ~ 8. 2. (3기) 8. 3. ~ 8. 16.",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260522005400213219",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260522005400213218",
-      "title": "삼척형 청년인턴 지원사업",
-      "region": "강원",
-      "regionGroup": "강원",
-      "city": "강원",
-      "type": "취업",
-      "status": "마감",
-      "support": "삼척시 거주 미취업 청년(18~49세) 공공 행정 분야 인턴 연수 기회 제공",
-      "period": "2026-02-02 ~ 2026-02-06",
-      "startDate": "2026-02-02",
-      "endDate": "2026-02-06",
-      "age": "만 18세 ~ 만 49세",
-      "income": "무관",
-      "residence": "강원특별자치도 삼척시",
-      "summary": "삼척시 거주 미취업 청년(18~49세) 공공 행정 분야 인턴 연수 기회 제공",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260522005400213218",
-      "tistoryUrl": ""
-    },
-    {
       "id": "20260522005400213217",
       "title": "삼척중앙시장 청년몰 운영사업",
       "region": "강원",
@@ -27704,25 +27666,6 @@
       "residence": "강원특별자치도 삼척시",
       "summary": "삼척시 거주 6개월 이상 미취업 청년(18~49세) 자격증 응시료 실비 지원",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260522005400213216",
-      "tistoryUrl": ""
-    },
-    {
-      "id": "20260522005400213215",
-      "title": "삼척형 청년스타트업 창업지원사업",
-      "region": "강원",
-      "regionGroup": "강원",
-      "city": "강원",
-      "type": "창업",
-      "status": "마감",
-      "support": "삼척시 거주 예비 창업자 및 1년 미만 초기 창업 청년(18~49세) 대상 창업간접비 지원",
-      "period": "2025-12-22 ~ 2026-01-23",
-      "startDate": "2025-12-22",
-      "endDate": "2026-01-23",
-      "age": "만 18세 ~ 만 49세",
-      "income": "무관",
-      "residence": "강원특별자치도 삼척시",
-      "summary": "삼척시 거주 예비 창업자 및 1년 미만 초기 창업 청년(18~49세) 대상 창업간접비 지원",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20260522005400213215",
       "tistoryUrl": ""
     },
     {
@@ -55428,25 +55371,6 @@
       "tistoryUrl": ""
     },
     {
-      "id": "20250901005400211553",
-      "title": "꿈이음 청춘카페 지원사업",
-      "region": "경북",
-      "regionGroup": "경북",
-      "city": "경북",
-      "type": "취업",
-      "status": "마감",
-      "support": "미취업 청년들의 구직역량강화를 위해 지역 내 카페를 활용 취창업 활동 지원",
-      "period": "2025-03-01 ~ 2025-11-30",
-      "startDate": "2025-03-01",
-      "endDate": "2025-11-30",
-      "age": "만 19세 ~ 만 49세",
-      "income": "무관",
-      "residence": "경상북도 예천군",
-      "summary": "미취업 청년들의 구직역량강화를 위해 지역 내 카페를 활용 취창업 활동 지원",
-      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20250901005400211553",
-      "tistoryUrl": ""
-    },
-    {
       "id": "20250901005400211554",
       "title": "2025년 청송군 청년 소모임 지원사업",
       "region": "경북",
@@ -55463,6 +55387,25 @@
       "residence": "경상북도 청송군",
       "summary": "청송군에서는 청년 소모임 활성화 및 건전한 청년문화 조성을 위한 청송군 청년 소모임 활동지원 사업",
       "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20250901005400211554",
+      "tistoryUrl": ""
+    },
+    {
+      "id": "20250901005400211553",
+      "title": "꿈이음 청춘카페 지원사업",
+      "region": "경북",
+      "regionGroup": "경북",
+      "city": "경북",
+      "type": "취업",
+      "status": "마감",
+      "support": "미취업 청년들의 구직역량강화를 위해 지역 내 카페를 활용 취창업 활동 지원",
+      "period": "2025-03-01 ~ 2025-11-30",
+      "startDate": "2025-03-01",
+      "endDate": "2025-11-30",
+      "age": "만 19세 ~ 만 49세",
+      "income": "무관",
+      "residence": "경상북도 예천군",
+      "summary": "미취업 청년들의 구직역량강화를 위해 지역 내 카페를 활용 취창업 활동 지원",
+      "officialUrl": "https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch/ythPlcyDetail/20250901005400211553",
       "tistoryUrl": ""
     },
     {
